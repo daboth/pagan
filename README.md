@@ -1,4 +1,4 @@
 pagan
 =====
 
-python avatar generator
+python automatic generator for avatars and notions
