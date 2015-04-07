@@ -1,9 +1,11 @@
 from PIL import Image, ImageDraw
 import random
 
+# Size variations only allowed on powers of two,
+# starting with 16 and ending at 2048.
 allowed = [16,32,64,128,256,512,1024,2048]
 
-imagesize = (8,8)
+imagesize = (256,256)
 imagemode = 'RGBA'
 
 im = Image.new(imagemode, imagesize)
@@ -15,24 +17,28 @@ print (rawpixels)
 verticalpixels = []
 horizontalpixels = []
 
-# The pixelmap will scale the native pixels to virtual pixels in the desired resolution.
-# Virtual pixels have a start- and endpoint based on the native pixelgrid.
-# Each virtual pixel is formatted as followed:
-# (startpoint , endpoint , RGBA Color) 
+# The pixelmap contains the native pixels scaled to virtual pixels
+# in the desired resolution. Virtual pixels have a start- and endpoint
+# based on the native pixelgrid. Each virtual pixel is
+# formatted as followed:
+# (startpoint , endpoint , RGBA Color)
 pixelmap = []
 
+# Desired virtual resolution of the image output.
+# Needs to be lesser or equal to the actual image size.
+# (fixed size for pagan)
+resolution = (16,16)
 
-
-resolution = (4,4)
-
+# Size of a single virtual pixel mapped to the real image size.
 dotsize = (imagesize[0] / resolution[0], imagesize[1] / resolution[1])
 
 print ("Virtual pixel size: %s,%s" % (dotsize[0], dotsize[1]))
 
 print (imagesize[0])
 
+# Image boundaries. Image starts at (0,0)
 max_x = imagesize[0] - 1
-max_y = imagesize[1] - 1 
+max_y = imagesize[1] - 1
 
 #Scaling the vertical pixel offsets.
 for pix_x in range(max_x + 1):
@@ -60,6 +66,16 @@ for i in range(len(verticalpixels)):
 for i in range(len(pixelmap)):
 	randomcolor = (random.randint(0,255), random.randint(0,255), random.randint(0,255))	
 	pixelmap[i].append(randomcolor)
+
+for item in pixelmap:
+	color = item[2]
+	#Access the rectangle edges.
+	pixelbox = (item[0][0], item[0][1], item[1][0],item[1][1])
+	draw = ImageDraw.Draw(im)
+	draw.rectangle(pixelbox, fill=color)
+
+im.show()
+
 
 
 
