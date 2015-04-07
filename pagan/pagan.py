@@ -14,6 +14,11 @@ print (rawpixels)
 
 verticalpixels = []
 horizontalpixels = []
+
+# The pixelmap will scale the native pixels to virtual pixels in the desired resolution.
+# Virtual pixels have a start- and endpoint based on the native pixelgrid.
+# Each virtual pixel is formatted as followed:
+# (startpoint , endpoint , RGBA Color) 
 pixelmap = []
 
 
@@ -22,10 +27,7 @@ resolution = (4,4)
 
 dotsize = (imagesize[0] / resolution[0], imagesize[1] / resolution[1])
 
-print ("Artificial pixel size: %s,%s" % (dotsize[0], dotsize[1]))
-
-# i = resolution[0]
-# j = resolution[1]
+print ("Virtual pixel size: %s,%s" % (dotsize[0], dotsize[1]))
 
 print (imagesize[0])
 
