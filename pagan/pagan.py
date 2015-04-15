@@ -1,11 +1,15 @@
 from PIL import Image, ImageDraw
 import random
+import ipgrinder
+
+ip = "238.111.21.116"
+colors = ipgrinder.grindIpForColors(ip)
 
 # Size variations only allowed on powers of two,
 # starting with 16 and ending at 2048.
 allowed = [16,32,64,128,256,512,1024,2048]
 
-imagesize = (256,256)
+imagesize = (96,96)
 imagemode = 'RGBA'
 
 im = Image.new(imagemode, imagesize)
@@ -64,7 +68,7 @@ for i in range(len(verticalpixels)):
 
 #Add random colors to the pixelmap (testing purpose)
 for i in range(len(pixelmap)):
-	randomcolor = (random.randint(0,255), random.randint(0,255), random.randint(0,255))	
+	randomcolor = colors[random.randint(0,len(colors) - 1)]
 	pixelmap[i].append(randomcolor)
 
 for item in pixelmap:
@@ -75,10 +79,6 @@ for item in pixelmap:
 	draw.rectangle(pixelbox, fill=color)
 
 im.show()
-
-
-
-
 print (verticalpixels)
 print (horizontalpixels)
 print (pixelmap)
