@@ -51,6 +51,8 @@ for pix_x in range(max_x + 1):
 		y = pix_x * dotsize[1]
 		if (y <= max_y):
 			if (x <= max_x):
+				#TODO: Maybe add specific color here, when
+				#all layers of body/armor/weapon are applied.
 				verticalpixels.append((x, y))
 
 #Scaling the horizontal pixel offsets.

@@ -24,31 +24,36 @@ def grindIpForArmor(ip):
 def grindIpForBody(ip):
 	return null
 
+# Grinds the ip address for a weapon to draw on the pixelmap.
+# Utilizes the last ip octet for maximum difference. This helps
+# to get more different results due to the last octet being the most
+# variant in local areas. 
 def grindIpForWeapon(ip):
 	
 	digitsum = getDigitSum(ip)
 	lastdigit = getLastOctet(ip)
 	decision = mapDecision(max_digitsum, len(weaponstyles), digitsum)
-	weaponstyle = chooseWeaponstyle(decision)
+	WEAPONSTYLE = chooseWeaponstyle(decision)
 
 	weapon = []
 
-	if(weaponstyle == 'TWOHANDED'):
+	if(WEAPONSTYLE == 'TWOHANDED'):
 		weapon.append(chooseWeapon(TWOHANDED_WEAPONS, lastdigit))
 
-	if(weaponstyle == 'ONEHANDED'):
+	if(WEAPONSTYLE == 'ONEHANDED'):
 		weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
 
-	if(weaponstyle == 'SHIELD_ONEHANDED'):
+	if(WEAPONSTYLE == 'SHIELD_ONEHANDED'):
 		weapon.append(chooseWeapon(SHIELDS, lastdigit))
 		weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
 
-	if(weaponstyle == 'ONEHANDED_ONEHANDED'):
+	if(WEAPONSTYLE == 'ONEHANDED_ONEHANDED'):
 		weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
 		weapon.append(chooseWeapon(ONEHANDED_WEAPONS, max_digit - lastdigit))
 
 	return weapon
 
+# Chooses a specific weapon from predefined weaponstyle.
 def chooseWeapon(weapons, digit):
 	decision = mapDecision(max_digit, len(weapons), digit)	
 	choice = ''
