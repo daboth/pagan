@@ -1,8 +1,8 @@
 max_digitsum = 255.0 * 4
 max_digit = 255.0
 
-weaponstyles = ['TWOHANDED', 'SHIELD_ONEHANDED', 'ONEHANDED', 'ONEHANDED_ONEHANDED']
-TWOHANDED_WEAPONS = ['GREATSWORD', 'BIGHAMMER', 'GREATMACE', 'GREATAXE', 'STAFF']
+weaponstyles = ['ONEHANDED_ONEHANDED', 'SHIELD_ONEHANDED', 'ONEHANDED', 'TWOHANDED']
+TWOHANDED_WEAPONS = ['GREATSWORD', 'BIGHAMMER', 'GREATMACE', 'GREATAXE', 'WAND']
 ONEHANDED_WEAPONS = ['SWORD', 'HAMMER', 'AXE', 'MACE', 'DAGGER']
 SHIELDS = ['LONGSHIELD', 'ROUNDSHIELD', 'BUCKLER', 'SHIELD']
 
@@ -105,6 +105,9 @@ if __name__ == "__main__" :
     ip6 = "12.168.2.1"
     ip7 = "133.100.13.11"
     ip8 = "127.0.0.1"
+    ip9 = "127.34.45.54"
+    ip10 = "12.11.1.214"
+
 
     print ("IP1: %s\tChoice: %s" % (ip, grindIpForWeapon(ip)))
     print ("IP2: %s\tChoice: %s" % (ip2, grindIpForWeapon(ip2)))
@@ -114,3 +117,5 @@ if __name__ == "__main__" :
     print ("IP6: %s\tChoice: %s" % (ip6, grindIpForWeapon(ip6)))
     print ("IP7: %s\tChoice: %s" % (ip7, grindIpForWeapon(ip7)))
     print ("IP8: %s\tChoice: %s" % (ip8, grindIpForWeapon(ip8)))
+    print ("IP9: %s\tChoice: %s" % (ip9, grindIpForWeapon(ip9)))
+    print ("IP10: %s\tChoice: %s" % (ip10, grindIpForWeapon(ip10)))

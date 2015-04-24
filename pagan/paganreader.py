@@ -2,11 +2,14 @@ import math
 
 DEBUG = True
 
-
-
 # This screams for an auxiliuary module.
 OCTET_LENGTH = 4
 MAX_DIGIT = 255
+
+# TODO: Maybe access the resolution of each
+# vertical and horicontal pixel and
+# divide them by 2. This apex is fixed for now.
+IMAGE_APEX = 8
 
 fixed_pixel = 'o'
 optional_pixel = '+'
@@ -14,7 +17,7 @@ optional_pixel = '+'
 # TODO: Split into two methods - Finding fixed pixels and optional pixels?
 # Less efficient but does not damage my brain. Or generate a tupel of two lists in a seperate method
 # and handle them differently.
-def parsepaganfile(filename, ip):
+def parsepaganfile(filename, ip, sym=False, invert=False):
     fd = open(filename, 'r')
 
     drawmap = []
@@ -39,13 +42,22 @@ def parsepaganfile(filename, ip):
     print (optmap)
     print (len(optmap))
 
-    extmap = decideoptionalpixels(optmap, ip)
+    extmap = decideoptionalpixels(optmap, ip, sym)
 
-    return sorted(drawmap + extmap)
+    drawmap += extmap
+
+    if sym:
+        drawmap = enforce_vertical_symmetry(drawmap)
+    elif invert:
+        drawmap = invert_vertical(drawmap)
+
+
+
+    return sorted(drawmap)
 
 
 # Use one of the octets to determine if a pixel is shown or not.
-def decideoptionalpixels(optmap, ip):
+def decideoptionalpixels(optmap, ip, sym):
     # At least four optional pixels are expected. One
     # for each ip octet. If there are less, there is
     # only one chunk to handle.
@@ -72,6 +84,9 @@ def decideoptionalpixels(optmap, ip):
         # Decide for each chunk which pixels are drawn.
         resmap += decidechunk(chunk, oct)
         i += chunksize
+
+    # if sym:
+    #     resmap = enforce_symmetry(resmap)
 
 
     return resmap
@@ -118,19 +133,59 @@ def get_max_octet(ip):
     return max
 
 
+def enforce_vertical_symmetry(pixmap):
+    print "Symmetry:"
+    mirror = []
+    for item in pixmap:
+        y = item[0]
+        x = item[1]
+        print ("%r, %r" % (x,y))
+        if x <= IMAGE_APEX:
+            diff_x = diff(x, IMAGE_APEX)
+            mirror.append((y, x + (2 * diff_x) - 1))
 
+        if x > IMAGE_APEX:
+            diff_x = diff(x, IMAGE_APEX)
+            mirror.append((y, x - (2 * diff_x) - 1))
+
+    return mirror + pixmap
+
+def invert_vertical(pixmap):
+    print "Invert:"
+    mirror = []
+    for item in pixmap:
+        y = item[0]
+        x = item[1]
+        print ("%r, %r" % (x,y))
+        if x <= IMAGE_APEX:
+            diff_x = diff(x, IMAGE_APEX)
+            mirror.append((y, x + (2 * diff_x) - 1))
+
+        if x > IMAGE_APEX:
+            diff_x = diff(x, IMAGE_APEX)
+            mirror.append((y, x - (2 * diff_x) - 1))
+
+    return mirror
+
+def diff(a, b):
+    return int(math.fabs(a - b))
+
+    # neu = diff (punkt1.x + 1, scheitel.x)
+    # if neu not in pixmap:
+    #   pixmap.append(neu)
 
 if __name__ == "__main__" :
 
     filename = 'example_weapon_short.pgn'
+    filename = 'body.pgn'
 
 
     # Test: None optional pixels are drawn with this address.
     ip = "113.227.182.122"
 
     # Test: All optional pixels are drawn with this address.
-    # ip = "98.12.255.10"
+    ip = "98.12.255.10"
 
-    dmap = parsepaganfile(filename, ip)
+    dmap = parsepaganfile(filename, ip, True)
 
     print ("Drawmap: %r" %dmap)
