@@ -37,17 +37,20 @@ def create_layers(ip):
 
     # Used to draw the basic body of the figure.
     layer_body = paganreader.parsepaganfile(FILE_BODY, ip, invert=False, sym=True)
-    # Used to draw the hair and the subfield armor if existent.
-    layer_aspect_hair_subfield = 0
-    # Used to draw the following: weapons, shields and boots
-    layer_weapons_boots = create_weapon_layer(weapons)
-    # Used to draw decoration on shields if existent and the torso armor.
-    layer_aspect_deco_torso = 0
+    # Used to draw the boots and the torso armor if existent.
+    layer_aspect_boots_torso = 0
+    # Used to draw weapons and shields.
+    layer_weapons = create_weapon_layer(weapons)
+    # Used to draw decoration on shields and hair if existent and the subfield armor.
+    layer_aspect_deco_subfield_hair = 0
 
+    # Apply all layers. Every layer is added to the drawmap and each virtual pixel
+    # will be gradually drawn. The last applied layers virtual pixel will then
+    # override each previously drawn pixel.
     layers = layer_body + \
-             layer_aspect_hair_subfield +\
-             layer_weapons_boots +\
-             layer_aspect_deco_torso
+             layer_aspect_boots_torso +\
+             layer_weapons +\
+             layer_aspect_deco_subfield_hair
 
     return layers
 
@@ -151,20 +154,8 @@ def scale_pixels(color, layer):
                 if (x1 <= max_x) and (x2 <= max_x):
                     if (pix_x, pix_y) in layer:
                         pixelmap.append([(y1, x1), (y2, x2), color])
-                    #                    else:
-                    #                        pixelmap.append([(y1,x1), (y2,x2), BACKGROUND_COLOR])
-
     return pixelmap
 
-
-# #Generating the pixelmap
-# for i in range(len(verticalpixels)):
-#     pixelmap.append([verticalpixels[i], horizontalpixels[i]])
-
-#Add random colors to the pixelmap (testing purpose)
-# for i in range(len(pixelmap)):
-#     randomcolor = colors[random.randint(0, len(colors) - 1)]
-#     pixelmap[i].append(randomcolor)
 
 def draw_image(pixelmap):
     for item in pixelmap:
