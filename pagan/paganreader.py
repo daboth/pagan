@@ -177,7 +177,7 @@ def diff(a, b):
 if __name__ == "__main__" :
 
     filename = 'example_weapon_short.pgn'
-    filename = 'body.pgn'
+    filename = 'BODY.pgn'
 
 
     # Test: None optional pixels are drawn with this address.

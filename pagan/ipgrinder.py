@@ -1,11 +1,45 @@
 max_digitsum = 255.0 * 4
 max_digit = 255.0
 
-weaponstyles = ['ONEHANDED_ONEHANDED', 'SHIELD_ONEHANDED', 'ONEHANDED', 'TWOHANDED']
-TWOHANDED_WEAPONS = ['GREATSWORD', 'BIGHAMMER', 'GREATMACE', 'GREATAXE', 'WAND']
-ONEHANDED_WEAPONS = ['SWORD', 'HAMMER', 'AXE', 'MACE', 'DAGGER']
-SHIELDS = ['LONGSHIELD', 'ROUNDSHIELD', 'BUCKLER', 'SHIELD']
+WEAPONSTYLES = ['ONEHANDED_ONEHANDED',
+                'SHIELD_ONEHANDED',
+                'ONEHANDED',
+                'TWOHANDED']
 
+TWOHANDED_WEAPONS = ['GREATSWORD',
+                     'BIGHAMMER',
+                     'GREATMACE',
+                     'GREATAXE',
+                     'WAND']
+
+ONEHANDED_WEAPONS = ['SWORD',
+                     'HAMMER',
+                     'AXE',
+                     'FLAIL',
+                     'MACE',
+                     'DAGGER']
+
+SHIELDS = ['LONGSHIELD',
+           'ROUNDSHIELD',
+           'BUCKLER',
+           'SHIELD']
+
+ASPECTSTYLES = ['HAIR_PANTS_BOOTS_TOP',
+                'HAIR_PANTS_BOOTS_NOTOP',
+                'HAIR_PANTS_NOBOOTS_TOP',
+                'HAIR_PANTS_NOBOOTS_NOTOP',
+                'HAIR_NOPANTS_BOOTS_TOP',
+                'HAIR_NOPANTS_BOOTS_NOTOP',
+                'HAIR_NOPANTS_NOBOOTS_TOP',
+                'HAIR_NOPANTS_NOBOOTS_NOTOP',
+                'NOHAIR_PANTS_BOOTS_TOP',
+                'NOHAIR_PANTS_BOOTS_NOTOP',
+                'NOHAIR_PANTS_NOBOOTS_TOP',
+                'NOHAIR_PANTS_NOBOOTS_NOTOP',
+                'NOHAIR_NOPANTS_BOOTS_TOP',
+                'NOHAIR_NOPANTS_BOOTS_NOTOP',
+                'NOHAIR_NOPANTS_NOBOOTS_TOP',
+                'NOHAIR_NOPANTS_NOBOOTS_NOTOP']
 
 def grindIpForColors(ip):
     octets = ip.split('.')
@@ -13,12 +47,14 @@ def grindIpForColors(ip):
     rgb2 = (int(octets[1]), int(octets[2]), int(octets[3]))
     rgb3 = (int(octets[2]), int(octets[3]), int(octets[0]))
     rgb4 = (int(octets[3]), int(octets[0]), int(octets[1]))
+    rgb5 = (int(octets[2]), int(octets[1]), int(octets[0]))
 
-    return [rgb1, rgb2, rgb3, rgb4]
+    return [rgb1, rgb2, rgb3, rgb4, rgb5]
 
 
-def grindIpForArmor(ip):
+def grind_for_aspect(ip):
     digitsum = getDigitSum(ip)
+    decision = mapDecision(max_digitsum, len(ASPECTSTYLES), digitsum)
     return null
 
 
@@ -33,7 +69,7 @@ def grindIpForBody(ip):
 def grindIpForWeapon(ip):
     digitsum = getDigitSum(ip)
     lastdigit = getLastOctet(ip)
-    decision = mapDecision(max_digitsum, len(weaponstyles), digitsum)
+    decision = mapDecision(max_digitsum, len(WEAPONSTYLES), digitsum)
     WEAPONSTYLE = chooseWeaponstyle(decision)
 
     weapon = []
@@ -66,9 +102,15 @@ def chooseWeapon(weapons, digit):
 
 
 def chooseWeaponstyle(decision):
-    for i in range(len(weaponstyles)):
+    for i in range(len(WEAPONSTYLES)):
         if (i < decision):
-            choice = weaponstyles[i]
+            choice = WEAPONSTYLES[i]
+    return choice
+
+def chooseWeaponstyle(decision):
+    for i in range(len(WEAPONSTYLES)):
+        if (i < decision):
+            choice = WEAPONSTYLES[i]
     return choice
 
 

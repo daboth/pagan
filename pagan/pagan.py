@@ -3,28 +3,95 @@ import random
 import ipgrinder
 import paganreader
 
-# ip = "238.111.21.116"
+ip = "238.111.21.116"
 
-BACKGROUND_COLOR = 0,0,0,0
-ip = "113.227.182.122"
-#ip = "192.168.2.1"
+BACKGROUND_COLOR = 0, 0, 0, 0
+#ip = "113.227.182.122"
+#ip = "194.94.127.7"
+# ip = "192.168.2.1"
 #ip = "98.12.255.10"
+#ip = "128.12.245.21"
+#ip = "128.12.245.121"
+ip = "92.226.67.148"
 colors = ipgrinder.grindIpForColors(ip)
+weapons = ipgrinder.grindIpForWeapon(ip)
+
+#weapons = ['GREATAXE']
+
+
 
 # Color distribution.
 color_body = colors[0]
-color_attire = colors[1]
+color_aspect = colors[1]
 color_weapon = colors[2]
-color_details = colors[3]
+color_aspect_details = colors[3]
 
-filename = 'example_weapon_short.pgn'
-# filename = 'test.pgn'
-file_body = 'pgn/body.pgn'
-file_weapon = 'pgn/wand.pgn'
+FILE_BODY = 'pgn/BODY.pgn'
 
-layer_body = paganreader.parsepaganfile(file_body, ip, invert=False, sym=True)
-layer_weapon = paganreader.parsepaganfile(file_weapon, ip, invert=False, sym=False)
-#print ("Drawmap: %r" % drawmap)
+#layers = create_layers(ip)
+
+
+def create_layers(ip):
+    '''Creates all layers to generate the image based off
+    the respective .pgn file decided by the pagan parser.'''
+
+    # Used to draw the basic body of the figure.
+    layer_body = paganreader.parsepaganfile(FILE_BODY, ip, invert=False, sym=True)
+    # Used to draw the hair and the subfield armor if existent.
+    layer_aspect_hair_subfield = 0
+    # Used to draw the following: weapons, shields and boots
+    layer_weapons_boots = create_weapon_layer(weapons)
+    # Used to draw decoration on shields if existent and the torso armor.
+    layer_aspect_deco_torso = 0
+
+    layers = layer_body + \
+             layer_aspect_hair_subfield +\
+             layer_weapons_boots +\
+             layer_aspect_deco_torso
+
+    return layers
+
+# There is just one body template. The optional pixels need to be mirrored so
+# the body layout will be symmetric to avoid uncanny looks.
+layer_body = paganreader.parsepaganfile(FILE_BODY, ip, invert=False, sym=True)
+
+layer_weapon = []
+
+hasShield = False
+for item in weapons:
+    # The first weapon will always be drawn normally.
+    if (item == 'SHIELD') or (weapons.index(item) == 0):
+        layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=False, sym=False)
+        hasShield = True
+    # If a shield was drawn, the weapon will be drawn normally.
+    elif hasShield:
+        layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=False, sym=False)
+    # When there are two weapons, the second one needs to be drawn on the other hand, so its pixel will be inverted.
+    else:
+        layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=True, sym=False)
+
+
+def create_weapon_layer(weapons):
+    '''Creates the layer for weapons. It is possible to generate two weapons
+    based on the weaponstyle decision. The second generated weapon needs
+    a different treatment wether a shield is existent or not.'''
+    layer_weapon = []
+
+    # Indicates, if a shield was generated.
+    hasShield = False
+    for item in weapons:
+        # The first weapon will always be drawn normally.
+        if (item == 'SHIELD') or (weapons.index(item) == 0):
+            layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=False, sym=False)
+            hasShield = True
+        # If a shield was drawn, the weapon will be drawn normally.
+        elif hasShield:
+            layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=False, sym=False)
+        # When there are two weapons, the second one needs to be drawn on the other hand, so its pixel will be inverted.
+        else:
+            layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=True, sym=False)
+
+    return layer_weapon
 
 # Size variations only allowed on powers of two,
 # starting with 16 and ending at 2048.
@@ -33,7 +100,7 @@ allowed = [16, 32, 64, 128, 256, 512, 1024, 2048]
 imagesize = (256, 256)
 imagemode = 'RGBA'
 
-im = Image.new(imagemode, imagesize)
+im = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
 
 rawpixels = im.load()
 
@@ -63,6 +130,7 @@ print ("Virtual pixel size: %s,%s" % (dotsize[0], dotsize[1]))
 max_x = imagesize[0] - 1
 max_y = imagesize[1] - 1
 
+
 def scale_pixels(color, layer):
     """Scales the pixel to the virtual pixelmap"""
     pixelmap = []
@@ -82,12 +150,11 @@ def scale_pixels(color, layer):
             if (y1 <= max_y) and (y2 <= max_y):
                 if (x1 <= max_x) and (x2 <= max_x):
                     if (pix_x, pix_y) in layer:
-                        pixelmap.append([(y1,x1), (y2,x2), color])
-                    else:
-                        pixelmap.append([(y1,x1), (y2,x2), BACKGROUND_COLOR])
+                        pixelmap.append([(y1, x1), (y2, x2), color])
+                    #                    else:
+                    #                        pixelmap.append([(y1,x1), (y2,x2), BACKGROUND_COLOR])
 
     return pixelmap
-
 
 
 # #Generating the pixelmap
@@ -107,13 +174,14 @@ def draw_image(pixelmap):
         draw = ImageDraw.Draw(im)
         draw.rectangle(pixelbox, fill=color)
 
-def superimpose_layer(pixelmap, layer):
-    for item in pixelmap:
-        print "Bla"
 
-if __name__ == "__main__" :
+def superimpose_layer(pixelmap, layer):
+    return pixelmap + layer
+
+
+if __name__ == "__main__":
     pixelmap = scale_pixels(color_body, layer_body)
-    #pixelmap + scale_pixels(color_weapon, layer_weapon)
+    pixelmap += scale_pixels(color_weapon, layer_weapon)
     draw_image(pixelmap)
     #pixelmap = scale_pixels(color_weapon, layer_weapon)
     #draw_layer(pixelmap)
@@ -122,3 +190,4 @@ if __name__ == "__main__" :
     im.show()
 
     print ("Length: %r" % len(pixelmap))
+    print (weapons)
