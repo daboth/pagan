@@ -23,26 +23,28 @@ SHIELDS = ['LONGSHIELD',
            'ROUNDSHIELD',
            'BUCKLER',
            'SHIELD']
+
 # Split into two aspectstyles because of the color mixing in the layers.
 # Paganreader tries to read a file with this name, resulting in reading all
 # the pixels into one layer, but the intention was to generate only two aspects
 # in the same color.
-ASPECTSTYLES = ['HAIR_PANTS_BOOTS_TOP',
-                'HAIR_PANTS_BOOTS_NOTOP',
-                'HAIR_PANTS_NOBOOTS_TOP',
-                'HAIR_PANTS_NOBOOTS_NOTOP',
-                'HAIR_NOPANTS_BOOTS_TOP',
-                'HAIR_NOPANTS_BOOTS_NOTOP',
-                'HAIR_NOPANTS_NOBOOTS_TOP',
-                'HAIR_NOPANTS_NOBOOTS_NOTOP',
-                'NOHAIR_PANTS_BOOTS_TOP',
-                'NOHAIR_PANTS_BOOTS_NOTOP',
-                'NOHAIR_PANTS_NOBOOTS_TOP',
-                'NOHAIR_PANTS_NOBOOTS_NOTOP',
-                'NOHAIR_NOPANTS_BOOTS_TOP',
-                'NOHAIR_NOPANTS_BOOTS_NOTOP',
-                'NOHAIR_NOPANTS_NOBOOTS_TOP',
-                'NOHAIR_NOPANTS_NOBOOTS_NOTOP']
+ASPECTSTYLES = [['HAIR'],
+                ['HAIR', 'PANTS', 'BOOTS'],
+                ['HAIR', 'PANTS', 'TOP'],
+                ['HAIR', 'PANTS'],
+                ['HAIR', 'BOOTS', 'TOP'],
+                ['HAIR', 'BOOTS'],
+                ['HAIR', 'TOP'],
+                ['HAIR', 'PANTS', 'BOOTS'],
+                ['HAIR', 'PANTS', 'BOOTS', 'TOP'],
+                ['PANTS', 'BOOTS', 'TOP'],
+                ['PANTS', 'BOOTS'],
+                ['PANTS', 'TOP'],
+                ['PANTS'],
+                ['BOOTS', 'TOP'],
+                ['BOOTS'],
+                ['TOP'],
+                []]
 
 def grindIpForColors(ip):
     octets = ip.split('.')
@@ -50,7 +52,7 @@ def grindIpForColors(ip):
     rgb2 = (int(octets[1]), int(octets[2]), int(octets[3]))
     rgb3 = (int(octets[2]), int(octets[3]), int(octets[0]))
     rgb4 = (int(octets[3]), int(octets[0]), int(octets[1]))
-    rgb5 = (int(octets[2]), int(octets[1]), int(octets[0]))
+    rgb5 = (int(octets[2]), int(octets[1]), int(octets[3]))
 
     return [rgb1, rgb2, rgb3, rgb4, rgb5]
 
@@ -88,6 +90,7 @@ def grindIpForWeapon(ip):
         weapon.append(chooseWeapon(ONEHANDED_WEAPONS, max_digit - lastdigit))
 
     return weapon
+
 
 
 # Chooses a specific weapon from predefined weaponstyle.

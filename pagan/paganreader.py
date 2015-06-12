@@ -1,6 +1,6 @@
 import math
 
-DEBUG = True
+DEBUG = False
 
 # This screams for an auxiliuary module.
 OCTET_LENGTH = 4
@@ -39,8 +39,8 @@ def parsepaganfile(filename, ip, sym=False, invert=False):
     # TODO: Decide for each optional pixel to be displayed
     # in respect of the optmap-size and an the third ip octet.
     # Merge the result with drawmap.
-    print (optmap)
-    print (len(optmap))
+    #print (optmap)
+    #print (len(optmap))
 
     extmap = decideoptionalpixels(optmap, ip, sym)
 
@@ -134,12 +134,12 @@ def get_max_octet(ip):
 
 
 def enforce_vertical_symmetry(pixmap):
-    print "Symmetry:"
+    #print "Symmetry:"
     mirror = []
     for item in pixmap:
         y = item[0]
         x = item[1]
-        print ("%r, %r" % (x,y))
+        #print ("%r, %r" % (x,y))
         if x <= IMAGE_APEX:
             diff_x = diff(x, IMAGE_APEX)
             mirror.append((y, x + (2 * diff_x) - 1))
@@ -151,12 +151,12 @@ def enforce_vertical_symmetry(pixmap):
     return mirror + pixmap
 
 def invert_vertical(pixmap):
-    print "Invert:"
+    #print "Invert:"
     mirror = []
     for item in pixmap:
         y = item[0]
         x = item[1]
-        print ("%r, %r" % (x,y))
+        #print ("%r, %r" % (x,y))
         if x <= IMAGE_APEX:
             diff_x = diff(x, IMAGE_APEX)
             mirror.append((y, x + (2 * diff_x) - 1))
