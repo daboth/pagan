@@ -85,10 +85,6 @@ def decideoptionalpixels(optmap, ip, sym):
         resmap += decidechunk(chunk, oct)
         i += chunksize
 
-    # if sym:
-    #     resmap = enforce_symmetry(resmap)
-
-
     return resmap
 
 # Decides for each chunk if its pixels should be drawn

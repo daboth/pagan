@@ -1,21 +1,10 @@
 from PIL import Image, ImageDraw
 import ipgrinder
 import paganreader
+import random
 
 DEBUG = True
-
-# ip = "238.111.21.116"
-
 BACKGROUND_COLOR = 0, 0, 0, 0
-# ip = "113.227.182.122"
-#ip = "194.94.127.7"
-#ip = "192.168.2.1"
-#ip = "98.12.255.10"
-#ip = "128.12.245.21"
-#ip = "128.12.245.121"
-#ip = "92.226.67.148"
-#ip = "127.0.0.1"
-#ip = "120.134.212.129"
 
 FILE_BODY = 'pgn/BODY.pgn'
 FILE_BOOTS = 'pgn/BOOTS.pgn'
@@ -27,6 +16,8 @@ FILE_SHIELD_DECO = 'pgn/SHIELD_DECO.pgn'
 
 
 def create_shield_deco_layer(weapons, ip):
+    '''Reads the SHIELD_DECO.pgn file and creates
+    the shield decal layer.'''
     layer = []
     if weapons[0] in ipgrinder.SHIELDS:
         layer = paganreader.parsepaganfile(FILE_SHIELD_DECO, ip, invert=False, sym=False)
@@ -34,6 +25,8 @@ def create_shield_deco_layer(weapons, ip):
 
 
 def create_hair_layer(aspect, ip):
+    '''Reads the HAIR.pgn file and creates
+    the hair layer.'''
     layer = []
     if 'HAIR' in aspect:
         layer = paganreader.parsepaganfile(FILE_HAIR, ip, invert=False, sym=True)
@@ -41,6 +34,8 @@ def create_hair_layer(aspect, ip):
 
 
 def create_torso_layer(aspect, ip):
+    '''Reads the TORSO.pgn file and creates
+    the torso layer.'''
     layer = []
     if 'TOP' in aspect:
         layer = paganreader.parsepaganfile(FILE_TORSO, ip, invert=False, sym=True)
@@ -48,6 +43,8 @@ def create_torso_layer(aspect, ip):
 
 
 def create_subfield_layer(aspect, ip):
+    '''Reads the SUBFIELD.pgn file and creates
+    the subfield layer.'''
     layer = []
     if 'PANTS' in aspect:
         layer = paganreader.parsepaganfile(FILE_SUBFIELD, ip, invert=False, sym=True)
@@ -58,6 +55,8 @@ def create_subfield_layer(aspect, ip):
 
 
 def create_boots_layer(aspect, ip):
+    '''Reads the BOOTS.pgn file and creates
+    the boots layer.'''
     layer = []
     if 'BOOTS' in aspect:
         layer = paganreader.parsepaganfile(FILE_BOOTS, ip, invert=False, sym=True)
@@ -90,14 +89,11 @@ def create_weapon_layer(weapons, ip):
 # starting with 16 and ending at 2048.
 allowed = [16, 32, 64, 128, 256, 512, 1024, 2048]
 
-imagesize = (256, 256)
+# Image size is fixed in this version of pagan.
+imagesize = (128, 128)
 imagemode = 'RGBA'
 
 im = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
-
-rawpixels = im.load()
-
-print (rawpixels)
 
 verticalpixels = []
 horizontalpixels = []
@@ -111,7 +107,7 @@ pixelmap = []
 
 # Desired virtual resolution of the image output.
 # Needs to be lesser or equal to the actual image size.
-# (fixed size for pagan)
+# (Fixed size for this pagan version.)
 resolution = (16, 16)
 
 # Size of a single virtual pixel mapped to the real image size.
@@ -147,12 +143,14 @@ def scale_pixels(color, layer):
     return pixelmap
 
 
-def draw_image(pixelmap):
+def draw_image(pixelmap, img):
+    '''Draws the image based on the given pixelmap.'''
     for item in pixelmap:
         color = item[2]
-        #Access the rectangle edges.
+
+        # Access the rectangle edges.
         pixelbox = (item[0][0], item[0][1], item[1][0], item[1][1])
-        draw = ImageDraw.Draw(im)
+        draw = ImageDraw.Draw(img)
         draw.rectangle(pixelbox, fill=color)
 
 
@@ -198,24 +196,29 @@ def setup_pixelmap(ip):
 
     return pixelmap
 
+def generate_random_ip():
+    '''Generates a random ip for
+    random avatar generation.'''
+    oct1 = random.randint(0, 255)
+    oct2 = random.randint(0, 255)
+    oct3 = random.randint(0, 255)
+    oct4 = random.randint(0, 255)
+
+    return ("%r.%r.%r.%r" % (oct1, oct2, oct3, oct4))
+
+def generate_avatar(ip):
+    img = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
+    pixelmap = setup_pixelmap(ip)
+    draw_image(pixelmap, img)
+    return img
 
 if __name__ == "__main__":
-    #ip = "162.233.4.12"
-    ip = "238.111.21.116"
-    #ip = "188.88.88.222"
-    #ip = "215.128.122.12"
-    #ip = "125.38.2.22"
-    #ip = "110.11.121.221"
-    #ip = "135.238.22.33"
-    pixelmap = setup_pixelmap(ip)
-    #pixelmap = create_layers("192.168.2.1")
+    # Generate some random avatars and saves them
+    # in an output folder when run as main.
+    ip = "0.0.0.0"
 
-    #print ("PIXELMAP: %r" % pixelmap)
-    draw_image(pixelmap)
-    #pixelmap = scale_pixels(color_weapon, layer_weapon)
-    #draw_layer(pixelmap)
-    #weapons = scale_pixels(layer_weapon)
-    #draw_layer(pixelmap)
-    im.show()
-
-    #print ("Length: %r" % len(pixelmap))
+    for i in range (100):
+        ip = generate_random_ip()
+        img = generate_avatar(ip)
+        filename = ("output/%s.png" % ip)
+        img.save(filename, 'PNG', transparency=0)

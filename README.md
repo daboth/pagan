@@ -1,7 +1,6 @@
 pagan
 =====
 
-
 Welcome to the python avatar generator for absolute nerds.
 
 Remember those good old days when computer gaming was a big part of your 

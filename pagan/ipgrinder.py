@@ -96,7 +96,7 @@ def grindIpForWeapon(ip):
 # Chooses a specific weapon from predefined weaponstyle.
 def chooseWeapon(weapons, digit):
     decision = mapDecision(max_digit, len(weapons), digit)
-    choice = ''
+    choice = []
     for i in range(len(weapons)):
         if (i < decision):
             choice = weapons[i]
@@ -104,12 +104,14 @@ def chooseWeapon(weapons, digit):
 
 
 def chooseWeaponstyle(decision):
+    choice = []
     for i in range(len(WEAPONSTYLES)):
         if (i < decision):
             choice = WEAPONSTYLES[i]
     return choice
 
 def chooseAspectStyle(decision):
+    choice = []
     for i in range(len(ASPECTSTYLES)):
         if (i < decision):
             choice = ASPECTSTYLES[i]
@@ -118,7 +120,7 @@ def chooseAspectStyle(decision):
 
 # Maps the domain to a number of descisions.
 def mapDecision(max_digitsum, num_decisions, digitsum):
-    return (num_decisions / max_digitsum) * digitsum
+    return (num_decisions / (max_digitsum + 1)) * (digitsum + 1)
 
 
 #Returns the digit sum of all ip octets.
@@ -145,12 +147,12 @@ if __name__ == "__main__" :
     ip2 = "1.24.21.16"
     ip3 = "238.211.271.166"
     ip4 = "192.238.12.231"
-    ip5 = "12.128.12.21"
-    ip6 = "12.168.2.1"
+    ip5 = "12.128.12.255"
+    ip6 = "12.168.2.255"
     ip7 = "133.100.13.11"
-    ip8 = "127.0.0.1"
-    ip9 = "127.34.45.54"
-    ip10 = "12.11.1.214"
+    ip8 = "0.0.0.255"
+    ip9 = "255.255.255.255"
+    ip10 = "0.0.0.0"
 
     print ("####### WEAPONS #######")
     print ("IP1: %s\tChoice: %s" % (ip, grindIpForWeapon(ip)))
@@ -163,14 +165,14 @@ if __name__ == "__main__" :
     print ("IP8: %s\tChoice: %s" % (ip8, grindIpForWeapon(ip8)))
     print ("IP9: %s\tChoice: %s" % (ip9, grindIpForWeapon(ip9)))
     print ("IP10: %s\tChoice: %s" % (ip10, grindIpForWeapon(ip10)))
-    print ("\n####### ASPECTS #######")
-    print ("IP1: %s\tChoice: %s" % (ip, grind_for_aspect(ip)))
-    print ("IP2: %s\tChoice: %s" % (ip2, grind_for_aspect(ip2)))
-    print ("IP3: %s\tChoice: %s" % (ip3, grind_for_aspect(ip3)))
-    print ("IP4: %s\tChoice: %s" % (ip4, grind_for_aspect(ip4)))
-    print ("IP5: %s\tChoice: %s" % (ip5, grind_for_aspect(ip5)))
-    print ("IP6: %s\tChoice: %s" % (ip6, grind_for_aspect(ip6)))
-    print ("IP7: %s\tChoice: %s" % (ip7, grind_for_aspect(ip7)))
-    print ("IP8: %s\tChoice: %s" % (ip8, grind_for_aspect(ip8)))
-    print ("IP9: %s\tChoice: %s" % (ip9, grind_for_aspect(ip9)))
-    print ("IP10: %s\tChoice: %s" % (ip10, grind_for_aspect(ip10)))
+    # print ("\n####### ASPECTS #######")
+    # print ("IP1: %s\tChoice: %s" % (ip, grind_for_aspect(ip)))
+    # print ("IP2: %s\tChoice: %s" % (ip2, grind_for_aspect(ip2)))
+    # print ("IP3: %s\tChoice: %s" % (ip3, grind_for_aspect(ip3)))
+    # print ("IP4: %s\tChoice: %s" % (ip4, grind_for_aspect(ip4)))
+    # print ("IP5: %s\tChoice: %s" % (ip5, grind_for_aspect(ip5)))
+    # print ("IP6: %s\tChoice: %s" % (ip6, grind_for_aspect(ip6)))
+    # print ("IP7: %s\tChoice: %s" % (ip7, grind_for_aspect(ip7)))
+    # print ("IP8: %s\tChoice: %s" % (ip8, grind_for_aspect(ip8)))
+    # print ("IP9: %s\tChoice: %s" % (ip9, grind_for_aspect(ip9)))
+    # print ("IP10: %s\tChoice: %s" % (ip10, grind_for_aspect(ip10)))
