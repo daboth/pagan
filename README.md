@@ -26,17 +26,16 @@ The software is currently under development and is going to feature the followin
 
 ###Usage example:
 
-'''python
-# Aquire an IPv4 address in String form.
-ip = "192.168.2.1"
-# Use pagan to generate the avatar image based on the IP.
-img = generate_avatar(ip)
-# Choose a filename
-filename = ("%s.png" % ip)
-# Save the image to file. Look up the Python PIL Documentation
-# for further information about image save functions.
-img.save(filename, 'PNG', transparency=0)
-'''
+    # Aquire an IPv4 address in String form.
+    ip = "192.168.2.1"
+    # Use pagan to generate the avatar image based on the IP.
+    img = generate_avatar(ip)
+    # Choose a filename
+    filename = ("%s.png" % ip)
+    # Save the image to file. Look up the Python PIL Documentation
+    # for further information about image save functions.
+    img.save(filename, 'PNG', transparency=0)
+
 
 ###Example avatars:
 
