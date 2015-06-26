@@ -11,13 +11,14 @@ fill the void left by poorly pixelated images by yourself. Well, pagan tries to
 give back some of those nostalgic feelings by providing identicons in an
 oldschool look that are inspired from retro roleplaying adventure games.
 
-Each ipv4 address will generate a unique Avatar image you are free to use. The purpose
-of pagan is to use it as a user image in any web application. It is based on the
-IPv4 address that logged in when creating an account or posted something.
+Each IPv4 address will generate a unique Avatar image. The purpose
+of pagan is to use it for generating a user image in any web application. It is
+is meant to replace default user images when creating new accounts or to enhance
+comment sections by visualizing the authors IPv4 address.
 
-The software is currently under development and is going to feature the following functions:
+**The software is currently under development and features the following functions:**
 
-* Process a given ip4 adress to generate identicons with unique colors and gear
+* Process a given IPv4 adress to generate identicons with unique colors and gear
 * Generate random avatar images
 * Create the avatar image based on a given resolution
 * Pagan will map all virtual 16x16 Pixels to the real image size.
