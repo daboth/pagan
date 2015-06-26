@@ -24,12 +24,8 @@ SHIELDS = ['LONGSHIELD',
            'BUCKLER',
            'SHIELD']
 
-# Split into two aspectstyles because of the color mixing in the layers.
-# Paganreader tries to read a file with this name, resulting in reading all
-# the pixels into one layer, but the intention was to generate only two aspects
-# in the same color.
+# The different aspects an avatar can take.
 ASPECTSTYLES = [['HAIR'],
-                ['HAIR', 'PANTS', 'BOOTS'],
                 ['HAIR', 'PANTS', 'TOP'],
                 ['HAIR', 'PANTS'],
                 ['HAIR', 'BOOTS', 'TOP'],
@@ -46,6 +42,28 @@ ASPECTSTYLES = [['HAIR'],
                 ['TOP'],
                 []]
 
+def init_weapon_list():
+    twohand = []
+    for item in TWOHANDED_WEAPONS:
+        twohand.append([item])
+
+    onehand = []
+    for item in ONEHANDED_WEAPONS:
+        onehand.append([item])
+
+    shield = SHIELDS
+
+    dualwield_variations = []
+    weapon_shield_variations = []
+
+    for item in ONEHANDED_WEAPONS:
+        for i in ONEHANDED_WEAPONS:
+            dualwield_variations.append([item, i])
+        for j in shield:
+            weapon_shield_variations.append([j, item])
+
+    return twohand + onehand + dualwield_variations + weapon_shield_variations
+
 def grindIpForColors(ip):
     octets = ip.split('.')
     rgb1 = (int(octets[0]), int(octets[1]), int(octets[2]))
@@ -60,38 +78,32 @@ def grindIpForColors(ip):
 def grind_for_aspect(ip):
     digitsum = getDigitSum(ip)
     decision = mapDecision(max_digitsum, len(ASPECTSTYLES), digitsum)
+    print decision
     return chooseAspectStyle(decision)
-
 
 # Grinds the ip address for a weapon to draw on the pixelmap.
 # Utilizes the last ip octet for maximum difference. This helps
 # to get more different results due to the last octet being the most
-# variant in local areas. 
+# variant in local areas.
 def grindIpForWeapon(ip):
-    digitsum = getDigitSum(ip)
+
+    weaponlist = init_weapon_list()
+    print len(weaponlist)
     lastdigit = getLastOctet(ip)
-    decision = mapDecision(max_digitsum, len(WEAPONSTYLES), digitsum)
-    WEAPONSTYLE = chooseWeaponstyle(decision)
+    decision = mapDecision(max_digit, len(weaponlist), lastdigit)
+    print decision
 
     weapon = []
+    choice = []
 
-    if (WEAPONSTYLE == 'TWOHANDED'):
-        weapon.append(chooseWeapon(TWOHANDED_WEAPONS, lastdigit))
+    for i in range(len(weaponlist)):
+        if (i < decision):
+            choice = weaponlist[i]
 
-    if (WEAPONSTYLE == 'ONEHANDED'):
-        weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
-
-    if (WEAPONSTYLE == 'SHIELD_ONEHANDED'):
-        weapon.append(chooseWeapon(SHIELDS, lastdigit))
-        weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
-
-    if (WEAPONSTYLE == 'ONEHANDED_ONEHANDED'):
-        weapon.append(chooseWeapon(ONEHANDED_WEAPONS, lastdigit))
-        weapon.append(chooseWeapon(ONEHANDED_WEAPONS, max_digit - lastdigit))
+    for item in choice:
+        weapon.append(item)
 
     return weapon
-
-
 
 # Chooses a specific weapon from predefined weaponstyle.
 def chooseWeapon(weapons, digit):
@@ -118,7 +130,7 @@ def chooseAspectStyle(decision):
     return choice
 
 
-# Maps the domain to a number of descisions.
+# Maps the domain to a number of decisions.
 def mapDecision(max_digitsum, num_decisions, digitsum):
     return (num_decisions / (max_digitsum + 1)) * (digitsum + 1)
 
@@ -165,14 +177,14 @@ if __name__ == "__main__" :
     print ("IP8: %s\tChoice: %s" % (ip8, grindIpForWeapon(ip8)))
     print ("IP9: %s\tChoice: %s" % (ip9, grindIpForWeapon(ip9)))
     print ("IP10: %s\tChoice: %s" % (ip10, grindIpForWeapon(ip10)))
-    # print ("\n####### ASPECTS #######")
-    # print ("IP1: %s\tChoice: %s" % (ip, grind_for_aspect(ip)))
-    # print ("IP2: %s\tChoice: %s" % (ip2, grind_for_aspect(ip2)))
-    # print ("IP3: %s\tChoice: %s" % (ip3, grind_for_aspect(ip3)))
-    # print ("IP4: %s\tChoice: %s" % (ip4, grind_for_aspect(ip4)))
-    # print ("IP5: %s\tChoice: %s" % (ip5, grind_for_aspect(ip5)))
-    # print ("IP6: %s\tChoice: %s" % (ip6, grind_for_aspect(ip6)))
-    # print ("IP7: %s\tChoice: %s" % (ip7, grind_for_aspect(ip7)))
-    # print ("IP8: %s\tChoice: %s" % (ip8, grind_for_aspect(ip8)))
-    # print ("IP9: %s\tChoice: %s" % (ip9, grind_for_aspect(ip9)))
-    # print ("IP10: %s\tChoice: %s" % (ip10, grind_for_aspect(ip10)))
+    print ("\n####### ASPECTS #######")
+    print ("IP1: %s\tChoice: %s" % (ip, grind_for_aspect(ip)))
+    print ("IP2: %s\tChoice: %s" % (ip2, grind_for_aspect(ip2)))
+    print ("IP3: %s\tChoice: %s" % (ip3, grind_for_aspect(ip3)))
+    print ("IP4: %s\tChoice: %s" % (ip4, grind_for_aspect(ip4)))
+    print ("IP5: %s\tChoice: %s" % (ip5, grind_for_aspect(ip5)))
+    print ("IP6: %s\tChoice: %s" % (ip6, grind_for_aspect(ip6)))
+    print ("IP7: %s\tChoice: %s" % (ip7, grind_for_aspect(ip7)))
+    print ("IP8: %s\tChoice: %s" % (ip8, grind_for_aspect(ip8)))
+    print ("IP9: %s\tChoice: %s" % (ip9, grind_for_aspect(ip9)))
+    print ("IP10: %s\tChoice: %s" % (ip10, grind_for_aspect(ip10)))

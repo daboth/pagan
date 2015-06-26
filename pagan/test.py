@@ -1,5 +1,53 @@
 import ipgrinder
 import pprint
+from multiprocessing import Pool, cpu_count
+from pprint import pprint
+
+
+def workerOne(argTpl):
+	idx, lst = argTpl
+	print("Number %d" %(idx))
+	#print "Nope"
+	# for i in range(int(1e6)):
+	# 	x +=1
+#	print (len(x))
+	return len(lst)
+
+liste = range(1000)
+
+liste2 = range(40,800)
+
+def chunkIt(seq, num):
+	avg = len(seq) / float(num)
+	out = []
+	last = 0.0
+	while last < len(seq):
+		out.append(seq[int(last): int(last+avg)])
+		last += avg
+	return out
+
+
+cpucores = cpu_count()
+
+joblist = chunkIt(liste2, cpucores)
+
+a = [len(elem)+10 for elem in joblist]
+
+# for idx, elem in enumerate(joblist):
+# 	print(idx, len(elem))
+
+#print(a)
+
+#print([(idx, elem) for idx, elem in enumerate(joblist)])
+#pprint(joblist)
+
+poolboy = Pool(cpucores)
+
+poolmap = poolboy.map_async(workerOne, [(idx, elem) for idx, elem in enumerate(joblist)])
+
+results = poolmap.get()
+
+print (results)
 
 
 
@@ -36,6 +84,9 @@ def test_ips():
             for k in range(256):
                 for l in range(256):
                     ip = ("%r.%r.%r.%r" % (oct1, oct2, oct3, oct4))
+
+                    # INSERT WORKER JOB HERE
+
                     aspect = ipgrinder.grind_for_aspect(ip)
                     weapon = ipgrinder.grindIpForWeapon(ip)
                     if aspect not in aspects_found:

@@ -119,8 +119,8 @@ def decidechunk(chunk, octet):
     return chunkresult
 
 
-# Returns the highest of the ip's octets.
 def get_max_octet(ip):
+    '''Returns the highest IPv4 octet.'''
     octets = ip.split('.')
     max = 0
     for oct in octets:
@@ -130,12 +130,14 @@ def get_max_octet(ip):
 
 
 def enforce_vertical_symmetry(pixmap):
-    #print "Symmetry:"
+    '''Enforces vertical symmetry of the pixelmap.
+    Returns a pixelmap with all pixels mirrored in the middle.
+    The initial ones still remain.'''
     mirror = []
     for item in pixmap:
         y = item[0]
         x = item[1]
-        #print ("%r, %r" % (x,y))
+
         if x <= IMAGE_APEX:
             diff_x = diff(x, IMAGE_APEX)
             mirror.append((y, x + (2 * diff_x) - 1))
@@ -147,12 +149,14 @@ def enforce_vertical_symmetry(pixmap):
     return mirror + pixmap
 
 def invert_vertical(pixmap):
-    #print "Invert:"
+    '''Inverts all virtual pixels vertically. This results in
+    a different pixelmap, where all pixels are mirrored on the
+    vertical middle.'''
     mirror = []
     for item in pixmap:
         y = item[0]
         x = item[1]
-        #print ("%r, %r" % (x,y))
+
         if x <= IMAGE_APEX:
             diff_x = diff(x, IMAGE_APEX)
             mirror.append((y, x + (2 * diff_x) - 1))
@@ -164,24 +168,5 @@ def invert_vertical(pixmap):
     return mirror
 
 def diff(a, b):
+    '''Returns the difference between two values.'''
     return int(math.fabs(a - b))
-
-    # neu = diff (punkt1.x + 1, scheitel.x)
-    # if neu not in pixmap:
-    #   pixmap.append(neu)
-
-if __name__ == "__main__" :
-
-    filename = 'example_weapon_short.pgn'
-    filename = 'BODY.pgn'
-
-
-    # Test: None optional pixels are drawn with this address.
-    ip = "113.227.182.122"
-
-    # Test: All optional pixels are drawn with this address.
-    ip = "98.12.255.10"
-
-    dmap = parsepaganfile(filename, ip, True)
-
-    print ("Drawmap: %r" %dmap)

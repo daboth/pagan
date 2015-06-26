@@ -3,8 +3,11 @@ import ipgrinder
 import paganreader
 import random
 
-DEBUG = True
-BACKGROUND_COLOR = 0, 0, 0, 0
+# Set True to generate debug output.
+DEBUG = False
+
+# All images are transparent.
+BACKGROUND_COLOR = (0, 0, 0, 0)
 
 FILE_BODY = 'pgn/BODY.pgn'
 FILE_BOOTS = 'pgn/BOOTS.pgn'
@@ -86,11 +89,15 @@ def create_weapon_layer(weapons, ip):
     return layer_weapon
 
 # Size variations only allowed on powers of two,
-# starting with 16 and ending at 2048.
+# starting with 16 and ending at 2048. Not used yet.
+# Current version only supports a fixed size of 16x16
+# virtual pixels.
 allowed = [16, 32, 64, 128, 256, 512, 1024, 2048]
 
-# Image size is fixed in this version of pagan.
+# Actual Image size in pixel is fixed in this version of pagan.
 imagesize = (128, 128)
+
+# Imagemode ist fixed to RGBA for creating PNG-Files.
 imagemode = 'RGBA'
 
 im = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
@@ -155,9 +162,9 @@ def draw_image(pixelmap, img):
 
 
 def setup_pixelmap(ip):
-    '''Creates and combines all required layers to
+    """Creates and combines all required layers to
     build a pixelmap for creating the virtual
-    pixels.'''
+    pixels."""
 
     # Color distribution.
     colors = ipgrinder.grindIpForColors(ip)
@@ -207,6 +214,8 @@ def generate_random_ip():
     return ("%r.%r.%r.%r" % (oct1, oct2, oct3, oct4))
 
 def generate_avatar(ip):
+    """Generates an PIL image avatar based on the given
+    ipv4 address. Acts as the main accessor to pagan."""
     img = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
     pixelmap = setup_pixelmap(ip)
     draw_image(pixelmap, img)
