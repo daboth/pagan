@@ -1,9 +1,10 @@
 from PIL import Image, ImageDraw
-import ipgrinder
+import hashgrinder
 import paganreader
 import random
+import hashlib
 
-# Set True to generate debug output.
+# Set True to generate debug output in this module.
 DEBUG = False
 
 # All images are transparent.
@@ -17,12 +18,42 @@ FILE_TORSO = 'pgn/TORSO.pgn'
 FILE_HAIR = 'pgn/HAIR.pgn'
 FILE_SHIELD_DECO = 'pgn/SHIELD_DECO.pgn'
 
+# Natural supported HASH algorithms by pythons hashlib.
+HASH_MD5 = 0
+HASH_SHA1 = 1
+HASH_SHA224 = 2
+HASH_SHA256 = 3
+HASH_SHA384 = 4
+HASH_SHA512 = 5
+
+
+def hash_input(inpt, algo=HASH_SHA256):
+    """Generates a hash from a given String
+    with a specified algorithm and returns the
+    hash in hexadecimal form. Default: sha256"""
+    if (algo == HASH_MD5):
+        hsh = hashlib.md5()
+    elif (algo == HASH_SHA1):
+        hsh = hashlib.sha1()
+    elif (algo == HASH_SHA224):
+        hsh = hashlib.sha224()
+    elif (algo == HASH_SHA256):
+        hsh = hashlib.sha256()
+    elif (algo == HASH_SHA384):
+        hsh = hashlib.sha384()
+    elif (algo == HASH_SHA512):
+        hsh = hashlib.sha512()
+
+    hsh.update(inpt)
+    hexhash = hsh.hexdigest()
+    return hexhash
+
 
 def create_shield_deco_layer(weapons, ip):
     '''Reads the SHIELD_DECO.pgn file and creates
     the shield decal layer.'''
     layer = []
-    if weapons[0] in ipgrinder.SHIELDS:
+    if weapons[0] in hashgrinder.SHIELDS:
         layer = paganreader.parsepaganfile(FILE_SHIELD_DECO, ip, invert=False, sym=False)
     return layer
 
@@ -76,7 +107,7 @@ def create_weapon_layer(weapons, ip):
     is_shield_drawn = False
     for item in weapons:
         # Shields will always be drawn normally.
-        if weapons[0] in ipgrinder.SHIELDS:
+        if weapons[0] in hashgrinder.SHIELDS:
             layer_weapon += paganreader.parsepaganfile('pgn/' + item + '.pgn', ip, invert=False, sym=False)
             is_shield_drawn = True
         # Weapons will be drawn normally if they are in the first entry or a shield was drawn.
@@ -167,16 +198,18 @@ def setup_pixelmap(ip):
     pixels."""
 
     # Color distribution.
-    colors = ipgrinder.grindIpForColors(ip)
+    # colors = hashgrinder.grindIpForColors(ip)
+    colors = hashgrinder.grind_hash_for_colors(ip)
     color_body = colors[0]
     color_aspect = colors[1]
     color_weapon = colors[2]
     color_aspect_details = colors[3]
     color_shield_deco = colors[4]
+    ip = "0.0.0.0"
 
     #Determine weapons and overall aspect of the avatar.
-    weapons = ipgrinder.grindIpForWeapon(ip)
-    aspect = ipgrinder.grind_for_aspect(ip)
+    weapons = hashgrinder.grindIpForWeapon(ip)
+    aspect = hashgrinder.grind_for_aspect(ip)
 
     if DEBUG:
         print ("Current aspect: %r" % aspect)
@@ -213,21 +246,52 @@ def generate_random_ip():
 
     return ("%r.%r.%r.%r" % (oct1, oct2, oct3, oct4))
 
-def generate_avatar(ip):
+# def generate_avatar(ip):
+#     """Generates an PIL image avatar based on the given
+#     ipv4 address. Acts as the main accessor to pagan."""
+#     img = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
+#     pixelmap = setup_pixelmap(ip)
+#     draw_image(pixelmap, img)
+#     return img
+
+def generate_avatar(inpt):
     """Generates an PIL image avatar based on the given
     ipv4 address. Acts as the main accessor to pagan."""
     img = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
-    pixelmap = setup_pixelmap(ip)
+    hashcode = hash_input(inpt)
+    pixelmap = setup_pixelmap(hashcode)
     draw_image(pixelmap, img)
     return img
+
+def hash_input_sha256(inpt):
+    """Generates a sha256 hash from a given
+    String and returns the hash in hexadecimal."""
+    hash = hashlib.sha256()
+    hash.update(inpt)
+    hexhash = hash.hexdigest()
+    return hexhash
+
 
 if __name__ == "__main__":
     # Generate some random avatars and saves them
     # in an output folder when run as main.
     ip = "0.0.0.0"
 
-    for i in range (100):
+    for i in range(6):
+        blubb = hash_input("Hi", i)
+        print ("Hash: %r  Length: %r" % (blubb, len(blubb)))
+
+    for i in range (2):
         ip = generate_random_ip()
-        img = generate_avatar(ip)
+        inpt = "Hello"
+        img = generate_avatar(inpt)
         filename = ("output/%s.png" % ip)
         img.save(filename, 'PNG', transparency=0)
+
+        h = hash_input_sha256("Durr")
+
+        colors = hashgrinder.grind_hash_for_colors(h)
+        for item in colors:
+            print item
+        print colors
+        #print list(colors)
