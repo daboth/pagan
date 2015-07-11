@@ -5,7 +5,7 @@ import random
 import hashlib
 
 # Set True to generate debug output in this module.
-DEBUG = False
+DEBUG = True
 
 # All images are transparent.
 BACKGROUND_COLOR = (0, 0, 0, 0)
@@ -97,28 +97,14 @@ def create_boots_layer(aspect, ip):
         layer = paganreader.parse_pagan_file(FILE_BOOTS, ip, invert=False, sym=True)
     return layer
 
+def create_shield_layer(shield, hashcode):
+    """Creates the layer for shields."""
+    return paganreader.parse_pagan_file('pgn/' + shield + '.pgn', hashcode, sym=False, invert=False)
 
-def create_weapon_layer(weapons, ip):
-    '''Creates the layer for weapons. It is possible to generate two weapons
-    based on the weaponstyle decision. The second generated weapon needs
-    a different treatment wether a shield is existent or not.'''
-    layer_weapon = []
+def create_weapon_layer(weapon, hashcode, isSecond=False):
+    """Creates the layer for weapons."""
+    return paganreader.parse_pagan_file('pgn/' + weapon + '.pgn', hashcode, sym=False, invert=isSecond)
 
-    # Indicates, if a shield was generated.
-    is_shield_drawn = False
-    for item in weapons:
-        # Shields will always be drawn normally.
-        if weapons[0] in hashgrinder.SHIELDS:
-            layer_weapon += paganreader.parse_pagan_file('pgn/' + item + '.pgn', ip, invert=False, sym=False)
-            is_shield_drawn = True
-        # Weapons will be drawn normally if they are in the first entry or a shield was drawn.
-        elif (weapons.index(item) == 0) or is_shield_drawn:
-            layer_weapon += paganreader.parse_pagan_file('pgn/' + item + '.pgn', ip, invert=False, sym=False)
-        # When there are two weapons, the second one needs to be drawn on the other hand, so its pixel will be inverted.
-        else:
-            layer_weapon += paganreader.parse_pagan_file('pgn/' + item + '.pgn', ip, invert=True, sym=False)
-
-    return layer_weapon
 
 # Size variations only allowed on powers of two,
 # starting with 16 and ending at 2048. Not used yet.
@@ -193,14 +179,14 @@ def draw_image(pixelmap, img):
         draw.rectangle(pixelbox, fill=color)
 
 
-def setup_pixelmap(ip):
+def setup_pixelmap(hashcode):
     """Creates and combines all required layers to
     build a pixelmap for creating the virtual
     pixels."""
 
     # Color distribution.
     # colors = hashgrinder.grindIpForColors(ip)
-    colors = hashgrinder.grind_hash_for_colors(ip)
+    colors = hashgrinder.grind_hash_for_colors(hashcode)
     color_body = colors[0]
     color_subfield = colors[1]
     color_weapon_a = colors[2]
@@ -210,11 +196,11 @@ def setup_pixelmap(ip):
     color_hair = colors[6]
     color_top = colors[7]
 
-    aspect = hashgrinder.grind_hash_for_aspect(ip)
+    aspect = hashgrinder.grind_hash_for_aspect(hashcode)
 
 
     #Determine weapons and overall aspect of the avatar.
-    weapons = hashgrinder.grind_hash_for_weapon(ip)
+    weapons = hashgrinder.grind_hash_for_weapon(hashcode)
 
 
 
@@ -224,35 +210,36 @@ def setup_pixelmap(ip):
 
     # There is just one body template. The optional pixels need to be mirrored so
     # the body layout will be symmetric to avoid uncanny looks.
-    layer_body = paganreader.parse_pagan_file(FILE_BODY, ip, invert=False, sym=True)
+    layer_body = paganreader.parse_pagan_file(FILE_BODY, hashcode, invert=False, sym=True)
 
-    layer_hair = create_hair_layer(aspect, ip)
-    layer_boots = create_boots_layer(aspect, ip)
-    layer_torso = create_torso_layer(aspect, ip)
-    # TODO: Add second weapon layer to use all colors.
-    layer_weapon = create_weapon_layer(weapons, ip)
-    layer_subfield = create_subfield_layer(aspect, ip)
-    layer_deco = create_shield_deco_layer(weapons, ip)
+    layer_hair = create_hair_layer(aspect, hashcode)
+    layer_boots = create_boots_layer(aspect, hashcode)
+    layer_torso = create_torso_layer(aspect, hashcode)
+
+    has_shield = (weapons[0] in hashgrinder.SHIELDS)
+
+    if has_shield:
+        layer_weapon_a = create_shield_layer(weapons[0], hashcode)
+        layer_weapon_b = create_weapon_layer(weapons[1], hashcode)
+    else:
+        layer_weapon_a = create_weapon_layer(weapons[0], hashcode)
+        if (len(weapons) == 2):
+            layer_weapon_b = create_weapon_layer(weapons[1], hashcode, True)
+
+    layer_subfield = create_subfield_layer(aspect, hashcode)
+    layer_deco = create_shield_deco_layer(weapons, hashcode)
 
     pixelmap = scale_pixels(color_body, layer_body)
     pixelmap += scale_pixels(color_top, layer_torso)
     pixelmap += scale_pixels(color_hair, layer_hair)
     pixelmap += scale_pixels(color_subfield, layer_subfield)
     pixelmap += scale_pixels(color_boots, layer_boots)
-    pixelmap += scale_pixels(color_weapon_a, layer_weapon)
+    pixelmap += scale_pixels(color_weapon_a, layer_weapon_a)
+    if (len(weapons) == 2):
+        pixelmap += scale_pixels(color_weapon_b, layer_weapon_b)
     pixelmap += scale_pixels(color_shield_deco, layer_deco)
 
     return pixelmap
-
-def generate_random_ip():
-    '''Generates a random ip for
-    random avatar generation.'''
-    oct1 = random.randint(0, 255)
-    oct2 = random.randint(0, 255)
-    oct3 = random.randint(0, 255)
-    oct4 = random.randint(0, 255)
-
-    return ("%r.%r.%r.%r" % (oct1, oct2, oct3, oct4))
 
 
 def generate_avatar(str, alg):
@@ -267,18 +254,9 @@ def generate_avatar(str, alg):
 if __name__ == "__main__":
     # Generate some random avatars and saves them
     # in an output folder when run as main.
-    ip = "0.0.0.0"
-
-    for i in range(6):
-        blubb = hash_input("Hi", i)
-        print ("Hash: %r  Length: %r" % (blubb, len(blubb)))
-
-    input_strings = ["test", "pagan", "python", "github", "avatar", "daboth"]
+    input_strings = ["pagan", "python", "github", "avatar", "piece of cake", "retro", "hash me if you can"]
 
     for inpt in input_strings:
         img = generate_avatar(inpt, HASH_SHA512)
         filename = ("output/%s.png" % inpt)
         img.save(filename, 'PNG', transparency=0)
-
-    print(int('ffffff', 16))
-        #print list(colors)
