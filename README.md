@@ -7,10 +7,10 @@ Welcome to the python avatar generator for absolute nerds.
 
 View changes [here](CHANGELOG.md).
 
-Remember those good old days when your own imagination was a big part of your
+Remember those good old days when your own imagination was a big part of the
 computer gaming experience? All the limitations of the hardware forced you to
 fill the void left by poorly pixelated images by yourself. Well, pagan tries to
-give back some of those nostalgic feelings by providing identicons in an
+give back some of those nostalgic feelings by providing **identicons** in an
 oldschool look that are inspired from retro roleplaying adventure games.
 
 Each string input will be hashed and generates a unique avatar image. The purpose
