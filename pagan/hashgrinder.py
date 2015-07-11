@@ -9,16 +9,17 @@ HEX_COLOR_LEN = 6
 # Base of the hexadecimal number system.
 HEX_BASE = 16
 
-# To generate 8 unique colors, hashes need to
+# To generate unique colors, hashes need to
 # contain at least this many characters.
 MINIMUM_HASH_LEN = COLOR_QUANTITY * HEX_COLOR_LEN
 
-# The first 8 Bits of a hash
+# The first and second six characters of a hash
 # determine the avatars overall aspect.
-ASPECT_CONTROL_BITS = 8
+ASPECT_CONTROL_LEN = 6
 
-max_digitsum = 255.0 * 4
-max_digit = 255.0
+# Decimal representation of hexadecimal 'ffffff'
+# as the maximum value for aspect decisions.
+MAX_DECISION_VALUE = 16777215
 
 # Set True to generate debug output in this module.
 DEBUG = True
@@ -100,7 +101,7 @@ def grind_hash_for_colors(hashcode):
     # to generate unique colors. Instead the hash is internally
     # appended by itself to fit the MINIMUM_HASH_LEN.
     # This leads to smaller hashes displaying less color
-    # variatons, depicting the insecurity of the used hashes.
+    # variatons, depicting the insecurity of small hashes.
     while (len(hashcode) < MINIMUM_HASH_LEN):
         chardiff = diff(len(hashcode), MINIMUM_HASH_LEN)
         if DEBUG:
@@ -120,14 +121,6 @@ def grind_hash_for_colors(hashcode):
     return colors
 
 
-# def split_sequence(seq, n):
-# """Generates subsequences from a
-#     sequence splitted at every position n."""
-#     while seq:
-#         yield seq[:n]
-#         seq = seq[n:]
-#
-
 def split_sequence(seq, n):
     """Generates tokens of length n from a sequence.
     The last token may be of smaller length."""
@@ -139,40 +132,37 @@ def split_sequence(seq, n):
 
 
 # Grinds the ip address for an aspect style to draw on the pixelmap.
-def grind_for_aspect(ip):
-    digitsum = getDigitSum(ip)
-    decision = mapDecision(max_digitsum, len(ASPECTSTYLES), digitsum)
-    print decision
-    return chooseAspectStyle(decision)
+def grind_hash_for_aspect(hashcode):
+    # aspect_control = split_sequence(hashcode, ASPECT_CONTROL_CHARS)
+    aspect_control = hashcode[:ASPECT_CONTROL_LEN]
+    #print aspect_control
+    hash_dec_value = int(aspect_control, HEX_BASE)
+    decision = map_decision(MAX_DECISION_VALUE, len(ASPECTSTYLES), hash_dec_value)
+    if DEBUG:
+        print ("Aspect decision: %r" %decision)
+    return choose_aspect(decision)
 
 
-# Grinds the ip address for a weapon to draw on the pixelmap.
-# Utilizes the last ip octet for maximum difference. This helps
-# to get more different results due to the last octet being the most
-# variant in local areas.
-def grindIpForWeapon(ip):
+def grind_hash_for_weapon(hashcode):
+    """ Grinds the given hashcode for a weapon to draw on
+    the pixelmap. Utilizes the second six characters from the
+    hashcode."""
+
     weaponlist = init_weapon_list()
-    print len(weaponlist)
-    lastdigit = getLastOctet(ip)
-    decision = mapDecision(max_digit, len(weaponlist), lastdigit)
-    print decision
+    # The second six characters of the hash
+    # control the weapon decision.
+    weapon_control = hashcode[ASPECT_CONTROL_LEN:(ASPECT_CONTROL_LEN * 2)]
 
-    weapon = []
-    choice = []
+    # Decimal value of the hash chunk to map.
+    hash_dec_value = int(weapon_control, HEX_BASE)
+    decision = map_decision(MAX_DECISION_VALUE, len(weaponlist), hash_dec_value)
 
-    for i in range(len(weaponlist)):
-        if (i < decision):
-            choice = weaponlist[i]
-
-    for item in choice:
-        weapon.append(item)
-
-    return weapon
+    return choose_weapon(decision, weaponlist)
 
 
-# Chooses a specific weapon from predefined weaponstyle.
-def chooseWeapon(weapons, digit):
-    decision = mapDecision(max_digit, len(weapons), digit)
+def choose_weapon(decision, weapons):
+    """Chooses a weapon from a given list
+    based on the decision."""
     choice = []
     for i in range(len(weapons)):
         if (i < decision):
@@ -180,15 +170,9 @@ def chooseWeapon(weapons, digit):
     return choice
 
 
-def chooseWeaponstyle(decision):
-    choice = []
-    for i in range(len(WEAPONSTYLES)):
-        if (i < decision):
-            choice = WEAPONSTYLES[i]
-    return choice
-
-
-def chooseAspectStyle(decision):
+def choose_aspect(decision):
+    """Chooses a style from ASPECTSTYLES
+    based on the decision."""
     choice = []
     for i in range(len(ASPECTSTYLES)):
         if (i < decision):
@@ -196,27 +180,16 @@ def chooseAspectStyle(decision):
     return choice
 
 
-# Maps the domain to a number of decisions.
-def mapDecision(max_digitsum, num_decisions, digitsum):
-    return (num_decisions / (max_digitsum + 1)) * (digitsum + 1)
-
-
-# Returns the digit sum of all ip octets.
-def getDigitSum(ip):
-    octets = ip.split('.')
-    digitsum = 0
-
-    for item in octets:
-        digitsum += int(item)
-
-    return digitsum
+def map_decision(max_digitsum, num_decisions, digitsum):
+    """Maps the domain to a number of decisions."""
+    return (num_decisions / (float(max_digitsum) + 1)) * (float(digitsum) + 1)
 
 
 def hex2rgb(hexvalue):
     """Converts a given hex color to
     its respective rgb color."""
 
-    # Make sure the possible '#' char is eliminated
+    # Make sure a possible '#' char is eliminated
     # before processing the color.
     if ('#' in hexvalue):
         hexcolor = hexvalue.replace('#', '')
@@ -224,12 +197,13 @@ def hex2rgb(hexvalue):
         hexcolor = hexvalue
 
     # Hex colors have a fixed length of 6 characters excluding the '#'
+    # TODO: Include custom exception here, even if it should never happen.
     if (len(hexcolor) != 6):
         print ("Unexpected length of hex color value.\nSix characters excluding \'#\' expected.")
         return 0
 
-    # Convert each part of the hex to
-    # an RGB color value.
+    # Convert each two characters of
+    # the hex to an RGB color value.
     r = int(hexcolor[0:2], HEX_BASE)
     g = int(hexcolor[2:4], HEX_BASE)
     b = int(hexcolor[4:6], HEX_BASE)
@@ -237,18 +211,14 @@ def hex2rgb(hexvalue):
     return r, g, b
 
 
-#Returns the last octet of the ip address.
-def getLastOctet(ip):
-    octets = ip.split('.')
-    return int(octets[len(octets) - 1])
-
-
 def diff(a, b):
-    '''Returns the difference between two values.'''
+    """Returns the difference between two values."""
     return int(math.fabs(a - b))
 
 
 if __name__ == "__main__":
+
+    # Testing some hashes.
     hash1 = "0396233d5b28eded8e34c1bf9dc80fae34756743594b9e5ae67f4f7d124d2e3d"
     hash2 = "ef101b0bc42f41e23e325f3da71daeff43ff7df9d41ff268e53a06c767de8487"
     hash3 = "ca4da36c48be1c0b87a7d575c73f6e42"
@@ -257,16 +227,16 @@ if __name__ == "__main__":
     h2 = grind_hash_for_colors(hash2)
     h3 = grind_hash_for_colors(hash3)
 
-    print h1
-
-
-
-    #print hashlib.algorithms
-
-    seq = split_sequence(hash1, 6)
-    print seq
-
     hex2rgb('#ffffff')
     hex2rgb('#ffff00')
     hex2rgb('#f5f5f5')
+
+    string_a = "12345"
+
+    print hash1
+    print hash1[:-1]
+
+    string_a = string_a[:-1]
+
+    print string_a
 
