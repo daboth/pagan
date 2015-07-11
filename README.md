@@ -5,6 +5,8 @@ Welcome to the python avatar generator for absolute nerds.
 
 **Current version: 0.21**
 
+View changes [here](CHANGELOG.md).
+
 Remember those good old days when your own imagination was a big part of your
 computer gaming experience? All the limitations of the hardware forced you to
 fill the void left by poorly pixelated images by yourself. Well, pagan tries to
