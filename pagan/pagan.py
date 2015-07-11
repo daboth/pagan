@@ -254,7 +254,8 @@ def generate_avatar(str, alg):
 if __name__ == "__main__":
     # Generate some random avatars and saves them
     # in an output folder when run as main.
-    input_strings = ["pagan", "python", "github", "avatar", "piece of cake", "retro", "hash me if you can"]
+    input_strings = ["pagan", "python", "github", "avatar",
+                     "piece of cake", "retro", "hash me if you can"]
 
     for inpt in input_strings:
         img = generate_avatar(inpt, HASH_SHA512)
