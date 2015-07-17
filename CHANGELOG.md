@@ -1,4 +1,10 @@
-### v0.21
+### v0.2.2
+**Minor changes**
+
+ * Refactoring
+ * Cleanup
+
+### v0.2.1
 **Major changes**
 
  * Modified pagan to generate hashes from arbitrary input strings.

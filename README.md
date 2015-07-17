@@ -3,7 +3,7 @@ pagan
 
 Welcome to the python avatar generator for absolute nerds.
 
-**Current version: 0.21**
+**Current version: 0.2.2**
 
 View changes [here](CHANGELOG.md).
 
