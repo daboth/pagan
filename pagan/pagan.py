@@ -1,11 +1,31 @@
 from PIL import Image, ImageDraw
 import hashgrinder
 import paganreader
-import random
 import hashlib
 
 # Set True to generate debug output in this module.
 DEBUG = True
+
+# Actual Image size in pixel is fixed in this version of pagan.
+IMAGE_SIZE = (128, 128)
+
+# Desired virtual resolution of the image output.
+# Needs to be lesser or equal to the actual image size.
+# (Fixed size for this pagan version.)
+VIRTUAL_RESOLUTION = (16, 16)
+
+# Size variations only allowed on powers of two,
+# starting with 16 and ending at 2048. Not used yet.
+# Current version only supports a fixed size of 16x16
+# virtual pixels.
+ALLOWED_RES = [16, 32, 64, 128, 256, 512, 1024, 2048]
+
+# Image boundaries. Image starts at (0,0)
+MAX_X = IMAGE_SIZE[0] - 1
+MAX_Y = IMAGE_SIZE[1] - 1
+
+# Imagemode ist fixed to RGBA for creating PNG-Files.
+IMAGE_MODE = 'RGBA'
 
 # All images are transparent.
 BACKGROUND_COLOR = (0, 0, 0, 0)
@@ -18,6 +38,7 @@ FILE_TORSO = 'pgn/TORSO.pgn'
 FILE_HAIR = 'pgn/HAIR.pgn'
 FILE_SHIELD_DECO = 'pgn/SHIELD_DECO.pgn'
 
+
 # Out of the box supported
 # HASH algorithms from pythons hashlib.
 HASH_MD5 = 0
@@ -26,6 +47,22 @@ HASH_SHA224 = 2
 HASH_SHA256 = 3
 HASH_SHA384 = 4
 HASH_SHA512 = 5
+
+
+im = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
+
+verticalpixels = []
+horizontalpixels = []
+
+# The pixelmap contains the native pixels scaled to virtual pixels
+# in the desired resolution. Virtual pixels have a start- and endpoint
+# based on the native pixelgrid. Each virtual pixel is
+# formatted as followed:
+# (startpoint , endpoint , RGBA Color)
+pixelmap = []
+
+# Size of a single virtual pixel mapped to the real image size.
+dotsize = (IMAGE_SIZE[0] / VIRTUAL_RESOLUTION[0], IMAGE_SIZE[1] / VIRTUAL_RESOLUTION[1])
 
 
 def hash_input(inpt, algo=HASH_SHA256):
@@ -97,52 +134,15 @@ def create_boots_layer(aspect, ip):
         layer = paganreader.parse_pagan_file(FILE_BOOTS, ip, invert=False, sym=True)
     return layer
 
+
 def create_shield_layer(shield, hashcode):
     """Creates the layer for shields."""
     return paganreader.parse_pagan_file('pgn/' + shield + '.pgn', hashcode, sym=False, invert=False)
 
+
 def create_weapon_layer(weapon, hashcode, isSecond=False):
     """Creates the layer for weapons."""
     return paganreader.parse_pagan_file('pgn/' + weapon + '.pgn', hashcode, sym=False, invert=isSecond)
-
-
-# Size variations only allowed on powers of two,
-# starting with 16 and ending at 2048. Not used yet.
-# Current version only supports a fixed size of 16x16
-# virtual pixels.
-allowed = [16, 32, 64, 128, 256, 512, 1024, 2048]
-
-# Actual Image size in pixel is fixed in this version of pagan.
-imagesize = (128, 128)
-
-# Imagemode ist fixed to RGBA for creating PNG-Files.
-imagemode = 'RGBA'
-
-im = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
-
-verticalpixels = []
-horizontalpixels = []
-
-# The pixelmap contains the native pixels scaled to virtual pixels
-# in the desired resolution. Virtual pixels have a start- and endpoint
-# based on the native pixelgrid. Each virtual pixel is
-# formatted as followed:
-# (startpoint , endpoint , RGBA Color)
-pixelmap = []
-
-# Desired virtual resolution of the image output.
-# Needs to be lesser or equal to the actual image size.
-# (Fixed size for this pagan version.)
-resolution = (16, 16)
-
-# Size of a single virtual pixel mapped to the real image size.
-dotsize = (imagesize[0] / resolution[0], imagesize[1] / resolution[1])
-
-print ("Virtual pixel size: %s,%s" % (dotsize[0], dotsize[1]))
-
-# Image boundaries. Image starts at (0,0)
-max_x = imagesize[0] - 1
-max_y = imagesize[1] - 1
 
 
 def scale_pixels(color, layer):
@@ -150,8 +150,8 @@ def scale_pixels(color, layer):
     pixelmap = []
 
     # Scaling the pixel offsets.
-    for pix_x in range(max_x + 1):
-        for pix_y in range(max_y + 1):
+    for pix_x in range(MAX_X + 1):
+        for pix_y in range(MAX_Y + 1):
 
             # Horizontal pixels
             y1 = pix_y * dotsize[0]
@@ -161,8 +161,8 @@ def scale_pixels(color, layer):
             y2 = pix_y * dotsize[0] + (dotsize[0] - 1)
             x2 = pix_x * dotsize[1] + (dotsize[1] - 1)
 
-            if (y1 <= max_y) and (y2 <= max_y):
-                if (x1 <= max_x) and (x2 <= max_x):
+            if (y1 <= MAX_Y) and (y2 <= MAX_Y):
+                if (x1 <= MAX_X) and (x2 <= MAX_X):
                     if (pix_x, pix_y) in layer:
                         pixelmap.append([(y1, x1), (y2, x2), color])
     return pixelmap
@@ -196,10 +196,11 @@ def setup_pixelmap(hashcode):
     color_hair = colors[6]
     color_top = colors[7]
 
+    # Grinds for the aspect.
     aspect = hashgrinder.grind_hash_for_aspect(hashcode)
 
 
-    #Determine weapons and overall aspect of the avatar.
+    #Determine weapons of the avatar.
     weapons = hashgrinder.grind_hash_for_weapon(hashcode)
 
 
@@ -245,7 +246,7 @@ def setup_pixelmap(hashcode):
 def generate_avatar(str, alg):
     """Generates an PIL image avatar based on the given
     input String. Acts as the main accessor to pagan."""
-    img = Image.new(imagemode, imagesize, BACKGROUND_COLOR)
+    img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
     hashcode = hash_input(str, alg)
     pixelmap = setup_pixelmap(hashcode)
     draw_image(pixelmap, img)

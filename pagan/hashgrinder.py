@@ -230,13 +230,3 @@ if __name__ == "__main__":
     hex2rgb('#ffffff')
     hex2rgb('#ffff00')
     hex2rgb('#f5f5f5')
-
-    string_a = "12345"
-
-    print hash1
-    print hash1[:-1]
-
-    string_a = string_a[:-1]
-
-    print string_a
-
