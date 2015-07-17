@@ -40,22 +40,22 @@ piece of cake | ![piece of cake](/images/piece%20of%20cake.png)
 hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.png)
 
 ###Usage example:
+```python
+# Acquire an arbitrary string.
+inpt = 'pagan'
 
-    # Acquire an arbitrary string.
-    inpt = 'pagan'
+# Use pagan to generate the avatar images based on the input.
+# Optional: You can choose, which hash function should be used.
+# Default is HASH_SHA256.
+img = generate_avatar(inpt, HASH_SHA512)
 
-    # Use pagan to generate the avatar images based on the input.
-    # Optional: You can choose, which hash function should be used.
-    # Default is HASH_SHA256.
-    img = generate_avatar(inpt, HASH_SHA512)
+# Set a filename.
+filename = ("output/%s.png" % inpt)
 
-    # Set a filename.
-    filename = ("output/%s.png" % inpt)
-
-    # Save the image to file. Look up the Python PIL Documentation
-    # for further information about image save functions.
-    img.save(filename, 'PNG', transparency=0)
-
+# Save the image to file. Look up the Python PIL Documentation
+# for further information about image save functions.
+img.save(filename, 'PNG', transparency=0)
+```
 
 ###Supported Hashes
 
