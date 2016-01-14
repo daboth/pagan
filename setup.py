@@ -1,0 +1,29 @@
+from setuptools import setup
+
+setup(
+    name='pagan',
+    packages=['pagan'],
+    use_2to3=True,
+    include_package_data=True,
+    version='0.3.2',
+    url='https://github.com/daboth/pagan',
+    download_url='https://github.com/daboth/pagan/tarball/0.3.2',
+    license='GPL',
+    description='python avatar generator for absolute nerds',
+    long_description=open('README.md').read(),
+    author='David Bothe',
+    author_email='davbothe@googlemail.com',
+    keywords=['avatar', 'identicon', 'generator'],
+    classifiers=[
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'License :: OSI Approved :: GNU General Public License v2 (GPLv2)',
+        'Operating System :: OS Independent',
+        'Development Status :: 4 - Beta',
+        'Intended Audience :: Developers',
+        'Environment :: Web Environment',
+        'Topic :: Software Development :: Libraries :: Python Modules'
+    ],
+    install_requires=['Pillow']
+
+)

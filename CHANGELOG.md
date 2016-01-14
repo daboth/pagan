@@ -1,3 +1,15 @@
+### v0.2.3
+**Major changes**
+
+ * Refactoring of the main filename from pagan.py to generator.py
+ * Added pathhandling for correct template reading to import pagan as a installed module.
+
+**Minor changes**
+
+ * Hashfunction accessors are now stored in a dictionary.
+ * When run as main, the predefined samples run all available hash algorithms.
+ * Added a setup script and manifest to publish on pypi.
+
 ### v0.2.2
 **Minor changes**
 

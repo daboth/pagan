@@ -1,0 +1,2 @@
+include MANIFEST.in LICENSE README.md CHANGELOG.md
+recursive-include pagan/pgn *

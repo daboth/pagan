@@ -3,7 +3,7 @@ pagan
 
 Welcome to the python avatar generator for absolute nerds.
 
-**Current version: 0.2.2**
+**Current version: 0.2.3**
 
 View changes [here](CHANGELOG.md).
 
@@ -47,7 +47,7 @@ inpt = 'pagan'
 # Use pagan to generate the avatar images based on the input.
 # Optional: You can choose, which hash function should be used.
 # Default is HASH_SHA256.
-img = generate_avatar(inpt, HASH_SHA512)
+img = generate(inpt, HASH_SHA512)
 
 # Set a filename.
 filename = ("output/%s.png" % inpt)
