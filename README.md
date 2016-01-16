@@ -3,7 +3,7 @@ pagan
 
 Welcome to the python avatar generator for absolute nerds.
 
-**Current version: 0.2.3**
+**Current version: 0.3.3**
 
 View changes [here](CHANGELOG.md).
 
@@ -41,29 +41,45 @@ hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.pn
 
 ###Usage example:
 ```python
+# Import the pagan module.
+import pagan
+
 # Acquire an arbitrary string.
 inpt = 'pagan'
 
-# Use pagan to generate the avatar images based on the input.
-# Optional: You can choose, which hash function should be used.
-# Default is HASH_SHA256.
-img = generate(inpt, HASH_SHA512)
+# Use pagan to generate the avatar object based on that input.
+# Optional: You can choose which hash function should be used.
+# The functions are available as constants.
+# Default: SHA256.
+img = pagan.Avatar(inpt, pagan.SHA512)
 
-# Set a filename.
-filename = ("output/%s.png" % inpt)
+# Open the avatar image in an
+# external image viewer.
+img.show()
 
-# Save the image to file. Look up the Python PIL Documentation
-# for further information about image save functions.
-img.save(filename, 'PNG', transparency=0)
+# Set an output path and a file name.
+# You don't need to specify a file ending.
+# Choose a path depending on your OS.
+outpath = 'output/'
+filename = inpt
+
+# Saves the avatar image as a .png file
+# by omitting the path and name. The
+# file endings will be generated automatically.
+img.save(outpath, filename)
+
+# You can change the avatar input and
+# hash function anytime.
+img.change('new input', pagan.SHA256)
 ```
 
 ###Supported Hashes
 
-Hash     | Accessor
+Hash     | Constant
 -------- | --------
-md5 | HASH_MD5
-sha1 | HASH_SHA1
-sha224 | HASH_SHA224
-sha256 | HASH_SHA256
-sha384 | HASH_SHA384
-sha512 | HASH_SHA512
+md5 | pagan.MD5
+sha1 | pagan.SHA1
+sha224 | pagan.SHA224
+sha256 | pagan.SHA256
+sha384 | pagan.SHA384
+sha512 | pagan.SHA512

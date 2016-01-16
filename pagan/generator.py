@@ -5,10 +5,10 @@ import hashlib
 import os
 
 # Set True to generate debug output in this module.
-DEBUG = True
+DEBUG = False
 
 # Default output path is the current working directory.
-OUTPUT_PATH = ('%s/output/' % os.getcwd())
+OUTPUT_PATH = ('%s%soutput%s' % (os.getcwd(), os.sep, os.sep))
 
 #Directory of the installed module.
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -37,13 +37,14 @@ IMAGE_MODE = 'RGBA'
 # All images are transparent.
 BACKGROUND_COLOR = (0, 0, 0, 0)
 
-FILE_BODY = ('%s/pgn/BODY.pgn' % PACKAGE_DIR)
-FILE_BOOTS = ('%s/pgn/BOOTS.pgn' % PACKAGE_DIR)
-FILE_SUBFIELD = ('%s/pgn/SUBFIELD.pgn' % PACKAGE_DIR)
-FILE_MIN_SUBFIELD = ('%s/pgn/MIN_SUBFIELD.pgn' % PACKAGE_DIR)
-FILE_TORSO = ('%s/pgn/TORSO.pgn' % PACKAGE_DIR)
-FILE_HAIR = ('%s/pgn/HAIR.pgn' % PACKAGE_DIR)
-FILE_SHIELD_DECO = ('%s/pgn/SHIELD_DECO.pgn' % PACKAGE_DIR)
+# Tailor the path to the pagan files os independently.
+FILE_BODY = ('%s%spgn%sBODY.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_BOOTS = ('%s%spgn%sBOOTS.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_SUBFIELD = ('%s%spgn%sSUBFIELD.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_MIN_SUBFIELD = ('%s%spgn%sMIN_SUBFIELD.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_TORSO = ('%s%spgn%sTORSO.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_HAIR = ('%s%spgn%sHAIR.pgn' % (PACKAGE_DIR, os.sep, os.sep))
+FILE_SHIELD_DECO = ('%s%spgn%sSHIELD_DECO.pgn' % (PACKAGE_DIR, os.sep, os.sep))
 
 
 # Out of the box supported
@@ -148,12 +149,12 @@ def create_boots_layer(aspect, ip):
 
 def create_shield_layer(shield, hashcode):
     """Creates the layer for shields."""
-    return pgnreader.parse_pagan_file(('%s/pgn/' % PACKAGE_DIR) + shield + '.pgn', hashcode, sym=False, invert=False)
+    return pgnreader.parse_pagan_file(('%s%spgn%s' % (PACKAGE_DIR, os.sep, os.sep)) + shield + '.pgn', hashcode, sym=False, invert=False)
 
 
 def create_weapon_layer(weapon, hashcode, isSecond=False):
     """Creates the layer for weapons."""
-    return pgnreader.parse_pagan_file(('%s/pgn/' % PACKAGE_DIR) + weapon + '.pgn', hashcode, sym=False, invert=isSecond)
+    return pgnreader.parse_pagan_file(('%s%spgn%s' % (PACKAGE_DIR, os.sep, os.sep)) + weapon + '.pgn', hashcode, sym=False, invert=isSecond)
 
 
 def scale_pixels(color, layer):
@@ -262,22 +263,3 @@ def generate(str, alg):
     pixelmap = setup_pixelmap(hashcode)
     draw_image(pixelmap, img)
     return img
-
-# if __name__ == "__main__":
-#     # Generate some random avatars and saves them
-#     # in an output folder when run as main.
-#     input_strings = ["pagan", "python", "github", "avatar",
-#                      "piece of cake", "retro", "hash me if you can"]
-#
-#     if not os.path.exists(OUTPUT_PATH):
-#         os.makedirs(OUTPUT_PATH)
-#
-#     for inpt in input_strings:
-#
-#         for i in range (0,6):
-#             hashfun = i
-#
-#             img = generate(inpt, hashfun)
-#             filename = ("%s%s_%s.png" % (OUTPUT_PATH, inpt, HASHES[hashfun]))
-#             print ("Saving: %s" % filename)
-#             img.save(filename, 'PNG', transparency=0)

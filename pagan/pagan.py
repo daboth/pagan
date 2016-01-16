@@ -1,58 +1,55 @@
 import generator
 import os
 
-class Pagan():
+
+class Avatar():
 
     # Default output path is in the current working directory.
     DEFAULT_OUTPUT_PATH = ('%s/output/' % os.getcwd())
     # Default filename.
     DEFAULT_FILENAME = ('pagan')
 
-    DEFAULT_HASHFUN = 'sha256'
-
-    MD5 = generator.HASH_MD5
-    SHA1 = generator.HASH_SHA1
-    SHA224 = generator.HASH_SHA224
-    SHA256 = generator.HASH_SHA256
-    SHA384 = generator.HASH_SHA384
-    SHA512 = generator.HASH_SHA512
-
-    # Maps input parameters to match the
-    # hash function in the generator.
-    HASHES = {"md5" : MD5, "sha1" : SHA1, "sha224" : SHA224,
-          "sha256" : SHA256, "sha384" : SHA384, "sha512" : SHA512}
+    DEFAULT_HASHFUN = generator.HASH_MD5
 
     def __init__(self, inpt, hashfun=DEFAULT_HASHFUN):
-        '''Initialize the paganicon and creates the image.'''
+        """Initialize the avatar and creates the image."""
         self.img = self.__create_image(inpt, hashfun)
 
     def __create_image(self, inpt, hashfun):
-        '''Creates the paganicon based on the input and
-        the chosen hash function.'''
-
-        try:
-            algo = self.HASHES[hashfun]
-        except KeyError:
-            print ("Unknown or unsupported hash function. Using default: %s" % (self.DEFAULT_HASHFUN))
-            algo = self.HASHES[self.DEFAULT_HASHFUN]
-
+        """Creates the avatar based on the input and
+        the chosen hash function."""
+        if hashfun not in generator.HASHES.keys():
+            print ("Unknown or unsupported hash function. Using default: %s" % self.DEFAULT_HASHFUN)
+            algo = self.DEFAULT_HASHFUN
+        else:
+            algo = hashfun
         return generator.generate(inpt, algo)
 
     def show(self):
-        '''Shows a preview of the paganicon in an external
-        image viewer.'''
+        """Shows a preview of the avatar in an external
+        image viewer."""
         self.img.show()
 
+    def change(self, inpt, hashfun=DEFAULT_HASHFUN):
+        """Change the avatar by providing a new input.
+        Uses the standard hash function if no one is given."""
+        self.img = self.__create_image(inpt, hashfun)
+
     def save(self, path=DEFAULT_OUTPUT_PATH, filename=DEFAULT_FILENAME):
-        '''Saves a paganicon under the given output path to
+        """Saves a avatar under the given output path to
         a given filename. The file ending ".png" is appended
         automatically. If the path does not exist, it will be
         created. When no parameters are omitted, a default path
-        and/or filename will be used.'''
+        and/or filename will be used."""
 
         # Creates a path when it does not exist.
         if not os.path.exists(path):
             os.makedirs(path)
+
+        # Cut the .png file ending if one was omitted.
+        if filename[-4:] == ".png":
+            filename = filename[:-4]
+
         # Saves the image under the given filepath.
         filepath = ("%s%s.png" % (path, filename))
         print ("Saving: %s" % filepath)

@@ -1,4 +1,18 @@
-### v0.2.3
+### 0.3.3
+**Major changes**
+
+ * Implementing the Avatar class in pagan.py as the main accessor.
+ * Overall restructure for an object oriented approach.
+ * Avatar objects can now be instantiated and manipulated before drawing.
+ * Hash functions can now be omitted on Avatar creation by using simple constants (e.g., pagan.SHA512).
+ * Generator paths are now OS independent.
+
+**Minor changes**
+
+ * Comment cleanup on some methods.
+ * Constants are now initialised in __init__.py
+
+### 0.2.3
 **Major changes**
 
  * Refactoring of the main filename from pagan.py to generator.py
@@ -10,13 +24,13 @@
  * When run as main, the predefined samples run all available hash algorithms.
  * Added a setup script and manifest to publish on pypi.
 
-### v0.2.2
+### 0.2.2
 **Minor changes**
 
  * Refactoring
  * Cleanup
 
-### v0.2.1
+### 0.2.1
 **Major changes**
 
  * Modified pagan to generate hashes from arbitrary input strings.
