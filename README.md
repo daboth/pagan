@@ -50,7 +50,7 @@ inpt = 'pagan'
 # Use pagan to generate the avatar object based on that input.
 # Optional: You can choose which hash function should be used.
 # The functions are available as constants.
-# Default: SHA256.
+# Default: MD5.
 img = pagan.Avatar(inpt, pagan.SHA512)
 
 # Open the avatar image in an
