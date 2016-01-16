@@ -5,7 +5,7 @@ setup(
     packages=['pagan'],
     use_2to3=True,
     include_package_data=True,
-    version='0.3.3',
+    version='0.3.2',
     url='https://github.com/daboth/pagan',
     download_url='https://github.com/daboth/pagan/tarball/0.3.2',
     license='GPL',

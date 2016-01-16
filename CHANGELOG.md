@@ -1,4 +1,4 @@
-### 0.3.3
+### 0.3.2
 **Major changes**
 
  * Implementing the Avatar class in pagan.py as the main accessor.
