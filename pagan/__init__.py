@@ -1,4 +1,4 @@
-from pagan import Avatar
+from .pagan import Avatar
 
 MD5 = pagan.generator.HASH_MD5
 SHA1 = pagan.generator.HASH_SHA1

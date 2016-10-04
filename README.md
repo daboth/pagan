@@ -3,7 +3,7 @@ pagan
 
 Welcome to the python avatar generator for absolute nerds.
 
-**Current version: 0.3.2**
+**Current version: 0.3.3**
 
 View changes [here](CHANGELOG.md).
 
@@ -38,6 +38,21 @@ github | ![github](/images/github.png)
 retro | ![retro](/images/retro.png)
 piece of cake | ![piece of cake](/images/piece%20of%20cake.png)
 hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.png)
+
+###Installation:
+
+Clone this repository:
+```
+git clone https://github.com/daboth/pagan.git
+```
+and install manually:
+```
+python setup.py install
+```
+or install with pip:
+```
+pip install pagan
+```
 
 ###Usage example:
 ```python

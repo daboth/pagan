@@ -5,9 +5,9 @@ setup(
     packages=['pagan'],
     use_2to3=True,
     include_package_data=True,
-    version='0.3.2',
+    version='0.3.3',
     url='https://github.com/daboth/pagan',
-    download_url='https://github.com/daboth/pagan/tarball/0.3.2',
+    download_url='https://github.com/daboth/pagan/tarball/0.3.3',
     license='GPL',
     description='python avatar generator for absolute nerds',
     long_description=open('README.md').read(),
@@ -24,6 +24,6 @@ setup(
         'Environment :: Web Environment',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    install_requires=['Pillow']
+    install_requires=['Pillow>=2.3.0']
 
 )

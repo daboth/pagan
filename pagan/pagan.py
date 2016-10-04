@@ -1,4 +1,4 @@
-import generator
+from . import generator
 import os
 
 
@@ -53,4 +53,4 @@ class Avatar():
         # Saves the image under the given filepath.
         filepath = ("%s%s.png" % (path, filename))
         print ("Saving: %s" % filepath)
-        self.img.save(filepath, 'PNG', transparency=0)
+        self.img.save(filepath, 'PNG')

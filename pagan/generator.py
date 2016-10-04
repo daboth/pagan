@@ -1,6 +1,6 @@
 from PIL import Image, ImageDraw
-import hashgrinder
-import pgnreader
+from . import hashgrinder
+from . import pgnreader
 import hashlib
 import os
 
@@ -94,7 +94,7 @@ def hash_input(inpt, algo=HASH_SHA256):
     elif (algo == HASH_SHA512):
         hashcode = hashlib.sha512()
 
-    hashcode.update(inpt)
+    hashcode.update(inpt.encode('utf-8'))
     hexhash = hashcode.hexdigest()
     return hexhash
 

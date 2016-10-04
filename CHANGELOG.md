@@ -1,3 +1,14 @@
+### 0.3.3
+**Major changes**
+
+ * Resolved issue with newer versions of pillow.
+ * Resolved issue with python 3 imports.
+ * Resolved issue with python 3 hash encoding.
+
+**Minor changes**
+
+ * Updated Readme.
+
 ### 0.3.2
 **Major changes**
 
