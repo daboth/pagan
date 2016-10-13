@@ -14,6 +14,7 @@ setup(
     author='David Bothe',
     author_email='davbothe@googlemail.com',
     keywords=['avatar', 'identicon', 'generator'],
+    scripts=['tools/console/pagan'],
     classifiers=[
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',

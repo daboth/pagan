@@ -1,11 +1,13 @@
-from . import generator
+# -*- coding: latin-1 -*-
+import generator
 import os
 
 
 class Avatar():
 
     # Default output path is in the current working directory.
-    DEFAULT_OUTPUT_PATH = ('%s/output/' % os.getcwd())
+    DEFAULT_OUTPUT_PATH = os.path.join(os.getcwd(), "output/")
+
     # Default filename.
     DEFAULT_FILENAME = ('pagan')
 
@@ -19,7 +21,8 @@ class Avatar():
         """Creates the avatar based on the input and
         the chosen hash function."""
         if hashfun not in generator.HASHES.keys():
-            print ("Unknown or unsupported hash function. Using default: %s" % self.DEFAULT_HASHFUN)
+            print ("Unknown or unsupported hash function. Using default: %s"
+                   % self.DEFAULT_HASHFUN)
             algo = self.DEFAULT_HASHFUN
         else:
             algo = hashfun
@@ -52,5 +55,7 @@ class Avatar():
 
         # Saves the image under the given filepath.
         filepath = ("%s%s.png" % (path, filename))
+        filepath = os.path.join(path, "%s.png" % filename)
+        # FIXIT: filepath without SUFFIX, print writes false filename
         print ("Saving: %s" % filepath)
         self.img.save(filepath, 'PNG')

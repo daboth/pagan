@@ -98,3 +98,22 @@ sha224 | pagan.SHA224
 sha256 | pagan.SHA256
 sha384 | pagan.SHA384
 sha512 | pagan.SHA512
+
+
+###Testing
+
+####Using py.test
+
+```
+>> pip install pytest
+>> pytest
+```
+
+####Using tox
+
+```
+>> pip install tox
+>> tox
+```
+
+you might have to adjust the python version in tox.ini to your needs.
