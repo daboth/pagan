@@ -110,7 +110,10 @@ def hashimage(hashvalue):
     """generate image by hash, usese tempfile :-/"""
     tmpf = tempfile.mkstemp(".png")[1]
     image = pagan.Avatar("")
-    image.img = pagan.generator.generate_by_hash(hashvalue)
+    try:
+        image.img = pagan.generator.generate_by_hash(hashvalue)
+    except pagan.generator.FalseHashError:
+        return "HashError, see log and check hash value, %s" % hashvalue
     image.save("/", tmpf)
     return static_file(tmpf, root="/")
 
