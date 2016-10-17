@@ -54,8 +54,12 @@ Welcome to the python avatar generator for absolute nerds.
 @error(404)
 def error404(code):
     """handle error 404 """
-    return template('{{code}} Avatar not found. You may use this:',
-                    code=code)
+    return """<table><tr><td>
+            <img src="/himage/01234567890abcdef01234567890abcdef">
+            <td>
+            I am the guard of this server and I am sorry to tell you:\
+            <h1>404 Avatar/Page not found.</h1> <p>Please go back to the \
+            <a href=/>front door</a>."""
 
 
 @route('/')
@@ -113,7 +117,8 @@ def hashimage(hashvalue):
     try:
         image.img = pagan.generator.generate_by_hash(hashvalue)
     except pagan.generator.FalseHashError:
-        return "HashError, see log and check hash value, %s" % hashvalue
+        return template("HashError, see log and check hash value, \
+                        {{hashvalue}}", hashvalue=hashvalue)
     image.save("/", tmpf)
     return static_file(tmpf, root="/")
 
