@@ -22,4 +22,8 @@ def test_generate_by_hash():
         img = pagan.generator.generate_by_hash(md5.hexdigest()[:2])
 
     with pytest.raises(pagan.generator.FalseHashError):
+<<<<<<< HEAD
         img = pagan.generator.generate_by_hash(md5.hexdigest()+"G")
+=======
+        img = pagan.generator.generate_by_hash(md5.hexdigest()+"A")
+>>>>>>> webserver
