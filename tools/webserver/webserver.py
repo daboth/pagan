@@ -1,10 +1,8 @@
 """pagan webserver"""
+from bottle import Bottle
 from bottle import debug
-from bottle import error
-from bottle import post
 from bottle import request
 from bottle import response
-from bottle import route
 from bottle import run
 from bottle import static_file
 from bottle import template
@@ -12,6 +10,10 @@ import hashlib
 import logging
 import pagan
 import tempfile
+
+# TODO() Long input on main page destroys page
+# TODO() Better Layout on main page
+# TODO() Beautify 404 Error
 
 logging.warning("\n%s\n\
 early work in progress, try at your own risk\n\
@@ -50,8 +52,10 @@ Welcome to the python avatar generator for absolute nerds.
 </tr></table</tr></table></body></html>
 """
 
+app = Bottle()
 
-@error(404)
+
+@app.error(404)
 def error404(code):
     """handle error 404 """
     return """<table><tr><td>
@@ -62,8 +66,8 @@ def error404(code):
             <a href=/>front door</a>."""
 
 
-@route('/')
-@post('/')
+@app.route('/')
+@app.post('/')
 def index():
     """main functionality of webserver"""
     default = ["pagan", "python", "avatar", "github"]
@@ -109,7 +113,7 @@ def index():
                     hist2Hash=hist2_hash, hist3Hash=hist3_hash)
 
 
-@route('/himage/<hashvalue>')
+@app.route('/himage/<hashvalue>')
 def hashimage(hashvalue):
     """generate image by hash, usese tempfile :-/"""
     tmpf = tempfile.mkstemp(".png")[1]
@@ -122,5 +126,15 @@ def hashimage(hashvalue):
     image.save("/", tmpf)
     return static_file(tmpf, root="/")
 
+
+@app.route('/coverage_exit')
+def coverage_exit():
+    """exit function for coverage"""
+    import os
+    import signal
+    if os.environ["COVERAGE_EXIT"] != "True":
+        return ""
+    os.kill(os.getpid(), signal.SIGTERM)
+
 debug(True)
-run(host='localhost', port=8080)
+run(app, host='localhost', port=8080)
