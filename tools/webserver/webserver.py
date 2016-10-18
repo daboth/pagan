@@ -11,6 +11,10 @@ import logging
 import pagan
 import tempfile
 
+# TODO() Long input on main page destroys page
+# TODO() Better Layout on main page
+# TODO() Beautify 404 Error
+
 logging.warning("\n%s\n\
 early work in progress, try at your own risk\n\
 this will pollute your temp dir!\n\
@@ -54,9 +58,13 @@ app = Bottle()
 @app.error(404)
 def error404(code):
     """handle error 404 """
-    return """<img src='/himage/1234567890abcde1234567890abcde1234567890abcdef'
-/><h1>These aren't <br> the pages you're<br>looking for.</h1><small>the pagan
- warriors - to protect and to serve"""
+    return """<table><tr><td>
+<img src='/himage/1234567890abcde1234567890abcde1234567890abcdef'/ height=300>
+<p><center><small>the pagan warriors - to protect and to serve</small>
+</td><td>
+<h1>These aren't <br> the pages you're<br>looking for.</h1>
+</td></tr>
+</table>"""
 
 
 @app.route('/')
