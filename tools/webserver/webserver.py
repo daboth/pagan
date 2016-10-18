@@ -59,12 +59,11 @@ app = Bottle()
 def error404(code):
     """handle error 404 """
     return """<table><tr><td>
-<img src='/himage/1234567890abcde1234567890abcde1234567890abcdef'/ height=300>
-<p><center><small>the pagan warriors - to protect and to serve</small>
-</td><td>
-<h1>These aren't <br> the pages you're<br>looking for.</h1>
-</td></tr>
-</table>"""
+            <img src="/himage/01234567890abcdef01234567890abcdef">
+            <td>
+            I am the guard of this server and I am sorry to tell you:\
+            <h1>404 Avatar/Page not found.</h1> <p>Please go back to the \
+            <a href=/>front door</a>."""
 
 
 @app.route('/')
@@ -122,7 +121,8 @@ def hashimage(hashvalue):
     try:
         image.img = pagan.generator.generate_by_hash(hashvalue)
     except pagan.generator.FalseHashError:
-        return "HashError, see log and check hash value, %s" % hashvalue
+        return template("HashError, see log and check hash value, \
+                        {{hashvalue}}", hashvalue=hashvalue)
     image.save("/", tmpf)
     return static_file(tmpf, root="/")
 
