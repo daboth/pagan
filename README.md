@@ -1,7 +1,7 @@
 pagan
 =====
 
-Welcome to the python avatar generator for absolute nerds.
+Welcome to the Python avatar generator for absolute nerds.
 
 **Current version: 0.4.3**
 
@@ -13,17 +13,17 @@ fill the void left by poorly pixelated images by yourself. Well, pagan tries to
 give back some of those nostalgic feelings by providing **identicons** in an
 oldschool look that are inspired from retro roleplaying adventure games.
 
-Each string input will be hashed and generates a unique avatar image. The purpose
+Each string input will be hashed and a unique avatar image is generated. The purpose
 of pagan is to use it for generating a user image in any web application. It is
 is meant to replace default user images when creating new accounts or to enhance
-comment sections, e.g. visualizing the authors ip address or username.
+comment sections, e.g. visualizing the author's IP address or username.
 
 **The software is currently under development and features the following functions:**
 
 * Process a given string to generate identicons with unique colors and gear.
-* The hash function can be chosen from the ones included in pythons hashlib.
+* The hash function can be chosen from the ones included in Python's hashlib.
 * Create the avatar image based on a given resolution.
-* Pagan will map all virtual 16x16 Pixels to the real image size.
+* Pagan will map all virtual 16x16 pixels to the real image size.
 * Expand pagan by adding new weapons or gear.
 * Enjoy the nostalgia!
 
