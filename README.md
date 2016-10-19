@@ -1,9 +1,9 @@
 pagan
 =====
 
-Welcome to the python avatar generator for absolute nerds.
+Welcome to the Python avatar generator for absolute nerds.
 
-**Current version: 0.3.3**
+**Current version: 0.4.3**
 
 View changes [here](CHANGELOG.md).
 
@@ -13,17 +13,17 @@ fill the void left by poorly pixelated images by yourself. Well, pagan tries to
 give back some of those nostalgic feelings by providing **identicons** in an
 oldschool look that are inspired from retro roleplaying adventure games.
 
-Each string input will be hashed and generates a unique avatar image. The purpose
+Each string input will be hashed and a unique avatar image is generated. The purpose
 of pagan is to use it for generating a user image in any web application. It is
 is meant to replace default user images when creating new accounts or to enhance
-comment sections, e.g. visualizing the authors ip address or username.
+comment sections, e.g. visualizing the author's IP address or username.
 
 **The software is currently under development and features the following functions:**
 
 * Process a given string to generate identicons with unique colors and gear.
-* The hash function can be chosen from the ones included in pythons hashlib.
+* The hash function can be chosen from the ones included in Python's hashlib.
 * Create the avatar image based on a given resolution.
-* Pagan will map all virtual 16x16 Pixels to the real image size.
+* Pagan will map all virtual 16x16 pixels to the real image size.
 * Expand pagan by adding new weapons or gear.
 * Enjoy the nostalgia!
 
@@ -43,18 +43,18 @@ hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.pn
 
 Clone this repository:
 ```
-git clone https://github.com/daboth/pagan.git
+>> git clone https://github.com/daboth/pagan.git
 ```
 and install manually:
 ```
-python setup.py install
+>> python setup.py install
 ```
 or install with pip:
 ```
-pip install pagan
+>> pip install pagan
 ```
 
-###Usage example:
+###Python usage example:
 ```python
 # Import the pagan module.
 import pagan
@@ -88,6 +88,37 @@ img.save(outpath, filename)
 img.change('new input', pagan.SHA256)
 ```
 
+###Command Line Interface
+
+With the pagan command line interface you can generate avatars without writing python scripts.
+```
+>> pagan [-h] [--show] [--output OUTPUT] [--hash HASH] input [input ...]
+```
+
+Simply typing:
+```
+>> pagan hello
+```
+will generate an avatar from the string 'hello' and save it in your current working directory. For more information,
+use the help parameter.
+```
+>> pagan -h
+```
+
+###Webserver
+
+Pagan can be run in a simple demo webserver application. To access the pagan demo, you need to run the script
+from the webserver directory. Beware: This is a demo application and it will fill your temp directory with pagan generated
+image files. Do not run in production.
+```
+>> cd /tools/webserver/
+>> python webserver.py
+```
+The webserver will serve on your localhost at port 8080. Open this adress in your browser window:
+```
+http://127.0.0.1:8080/
+```
+
 ###Supported Hashes
 
 Hash     | Constant
@@ -99,8 +130,10 @@ sha256 | pagan.SHA256
 sha384 | pagan.SHA384
 sha512 | pagan.SHA512
 
-
 ###Testing
+
+To run the pagan tests, you need to install additional python modules. You can choose between pytest and tox. Configure
+the tox.ini to test different python versions.
 
 ####Using py.test
 
@@ -115,5 +148,3 @@ sha512 | pagan.SHA512
 >> pip install tox
 >> tox
 ```
-
-you might have to adjust the python version in tox.ini to your needs.
