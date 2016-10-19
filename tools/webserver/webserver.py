@@ -132,5 +132,6 @@ def coverage_exit():
         return ""
     os.kill(os.getpid(), signal.SIGTERM)
 
-debug(True)
-run(app, host='localhost', port=8080)
+if __name__ == "__main__":
+    debug(True)
+    run(app, host='localhost', port=8080)
