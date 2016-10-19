@@ -15,7 +15,8 @@ parser.add_argument("--output",
                     help="save image to specific output path")
 parser.add_argument("--hash", default="MD5",
                     help="use hash function, allowed %s, default %s" %
-                    (generator.HASHES.values(), list(generator.HASHES.values())[0]))
+                    (generator.HASHES.values(),
+                     list(generator.HASHES.values())[0]))
 
 args = parser.parse_args()
 
@@ -24,7 +25,11 @@ slogan = " ".join(args.input)
 if args.hash and args.hash not in generator.HASHES.values():
     HASH = ""
 elif args.hash and args.hash in generator.HASHES.values():
-    HASH = list(generator.HASHES.values()).index(args.hash)
+    # dict.keys() must not be right ordered
+    for key in generator.HASHES:
+        if args.hash == generator.HASHES[key]:
+            HASH = key
+            break
 
 if not args.output:
     args.show = True
