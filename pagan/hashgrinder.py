@@ -22,7 +22,7 @@ ASPECT_CONTROL_LEN = 6
 MAX_DECISION_VALUE = 16777215
 
 # Set True to generate debug output in this module.
-DEBUG = True
+DEBUG = False
 
 WEAPONSTYLES = ['ONEHANDED_ONEHANDED',
                 'SHIELD_ONEHANDED',

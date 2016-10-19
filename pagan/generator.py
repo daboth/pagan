@@ -1,8 +1,17 @@
+# -*- coding: latin-1 -*-
+
 from PIL import Image, ImageDraw
-from . import hashgrinder
-from . import pgnreader
+import hashgrinder
+import pgnreader
 import hashlib
 import os
+import sys
+
+
+class FalseHashError(Exception):
+    """ """
+    pass
+
 
 # Set True to generate debug output in this module.
 DEBUG = False
@@ -10,7 +19,7 @@ DEBUG = False
 # Default output path is the current working directory.
 OUTPUT_PATH = ('%s%soutput%s' % (os.getcwd(), os.sep, os.sep))
 
-#Directory of the installed module.
+# Directory of the installed module.
 PACKAGE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Actual Image size in pixel is fixed in this version of pagan.
@@ -94,7 +103,12 @@ def hash_input(inpt, algo=HASH_SHA256):
     elif (algo == HASH_SHA512):
         hashcode = hashlib.sha512()
 
-    hashcode.update(inpt.encode('utf-8'))
+    if sys.version_info.major == 2:
+        inpt = bytes(inpt)
+    else:
+        inpt = bytes(inpt, "utf-8")
+
+    hashcode.update(inpt)
     hexhash = hashcode.hexdigest()
     return hexhash
 
@@ -260,6 +274,25 @@ def generate(str, alg):
     input String. Acts as the main accessor to pagan."""
     img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
     hashcode = hash_input(str, alg)
+    pixelmap = setup_pixelmap(hashcode)
+    draw_image(pixelmap, img)
+    return img
+
+
+def generate_by_hash(hashcode):
+    """Generates an PIL image avatar based on the given
+    hash String. Acts as the main accessor to pagan."""
+    img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
+    if len(hashcode) < 32:
+        print ("hashcode must have lenght >= 32, %s" % hashcode)
+        raise FalseHashError
+
+    allowed = "0123456789abcdef"
+    hashcheck = [c in allowed for c in hashcode]
+    if False in hashcheck:
+        print ("hashcode has not allowed structure %s" % hashcode)
+        raise FalseHashError
+
     pixelmap = setup_pixelmap(hashcode)
     draw_image(pixelmap, img)
     return img
