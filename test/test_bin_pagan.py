@@ -7,4 +7,21 @@ def test_simple_call():
     p = Popen(["pagan", "--output=/tmp/0101010101.png", "0101"],
               stdout=PIPE, stderr=PIPE)
     stdout, stderr = p.communicate()
+    assert stdout
     assert not stderr
+
+
+def test_simple_call_err():
+    p = Popen(["pagan", "--output=/tmp/0101010101.png", "--err", "0101"],
+              stdout=PIPE, stderr=PIPE)
+    stdout, stderr = p.communicate()
+    assert not stdout
+    assert stderr
+
+
+def test_simple_call_err_no_input():
+    p = Popen(["pagan", "--output=/tmp/0101010101.png"],
+              stdout=PIPE, stderr=PIPE)
+    stdout, stderr = p.communicate()
+    assert not stdout
+    assert stderr
