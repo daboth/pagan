@@ -3,7 +3,7 @@ pagan
 
 Welcome to the python avatar generator for absolute nerds.
 
-**Current version: 0.3.3**
+**Current version: 0.4.3**
 
 View changes [here](CHANGELOG.md).
 
@@ -102,6 +102,9 @@ sha512 | pagan.SHA512
 
 ###Testing
 
+To run the pagan tests, you need to install additional python modules. You can choose between pytest and tox. Configure
+the tox.ini to test different python versions.
+
 ####Using py.test
 
 ```
@@ -115,5 +118,3 @@ sha512 | pagan.SHA512
 >> pip install tox
 >> tox
 ```
-
-you might have to adjust the python version in tox.ini to your needs.
