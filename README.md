@@ -43,18 +43,18 @@ hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.pn
 
 Clone this repository:
 ```
-git clone https://github.com/daboth/pagan.git
+>> git clone https://github.com/daboth/pagan.git
 ```
 and install manually:
 ```
-python setup.py install
+>> python setup.py install
 ```
 or install with pip:
 ```
-pip install pagan
+>> pip install pagan
 ```
 
-###Usage example:
+###Python usage example:
 ```python
 # Import the pagan module.
 import pagan
@@ -88,6 +88,37 @@ img.save(outpath, filename)
 img.change('new input', pagan.SHA256)
 ```
 
+###Command Line Interface
+
+With the pagan command line interface you can generate avatars without writing python scripts.
+```
+>> pagan [-h] [--show] [--output OUTPUT] [--hash HASH] input [input ...]
+```
+
+Simply typing:
+```
+>> pagan hello
+```
+will generate an avatar from the string 'hello' and save it in your current working directory. For more information,
+use the help parameter.
+```
+>> pagan -h
+```
+
+###Webserver
+
+Pagan can be run in a simple demo webserver application. To access the pagan demo, you need to run the script
+from the webserver directory. Beware: This is a demo application and it will fill your temp directory with pagan generated
+image files. Do not run in production.
+```
+>> cd /tools/webserver/
+>> python webserver.py
+```
+The webserver will serve on your localhost at port 8080. Open this adress in your browser window:
+```
+http://127.0.0.1:8080/
+```
+
 ###Supported Hashes
 
 Hash     | Constant
@@ -98,7 +129,6 @@ sha224 | pagan.SHA224
 sha256 | pagan.SHA256
 sha384 | pagan.SHA384
 sha512 | pagan.SHA512
-
 
 ###Testing
 
