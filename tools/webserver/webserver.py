@@ -124,15 +124,6 @@ def index():
     md5.update(hist3)
     hist3_hash = md5.hexdigest()
 
-    def add_wbr(s):
-        l = list(s)
-        for pos in range(0, len(l), 10):
-            l[pos] = l[pos] + " "
-        return s
-        return "".join(l)
-    hist1 = add_wbr(hist1)
-    hist2 = add_wbr(hist2)
-    hist3 = add_wbr(hist3)
     return template(TEMPLATEINDEX, slogan=slogan,
                     hist1=hist1, hist2=hist2, hist3=hist3,
                     sloganHash=slogan_hash, hist1Hash=hist1_hash,
