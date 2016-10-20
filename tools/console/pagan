@@ -15,8 +15,7 @@ parser.add_argument("--output",
                     help="save image to specific output path")
 parser.add_argument("--hash", default="MD5",
                     help="use hash function, allowed %s, default %s" %
-                    (generator.HASHES.values(),
-                     list(generator.HASHES.values())[0]))
+                    (generator.HASHES.values(), "MD5"))
 
 args = parser.parse_args()
 
