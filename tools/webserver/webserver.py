@@ -34,17 +34,37 @@ Welcome to the python avatar generator for absolute nerds.
 <form method=post><input type="search" name="slogan" value="{{slogan}}">
 <input type=submit></form>
 <hr>
-<table width=100%><tr><th>Current Search<th><th>Previous Search</tr><tr><td>
-<p>{{slogan}}
-<p><img src="/himage/{{sloganHash}}">
-<td width=10%>
+<table width=100%><tr><th>Current Search<th><th>Previous Search</tr><tr>
+
 <td>
-<p>{{hist1}}
+<p><img src="/himage/{{sloganHash}}">
+
+<td width=10%>
+
+<td>
 <p><img src="/himage/{{hist1Hash}}">
-<td>{{hist2}}
+
+<td>
 <p><img src="/himage/{{hist2Hash}}">
-<td>{{hist3}}
+
+<td>
 <p><img src="/himage/{{hist3Hash}}">
+<tr valign="top">
+
+<td><p><span style="width:200px; word-wrap:break-word; display:inline-block;">
+{{slogan}}</span>
+
+<td>
+
+<td><p><span style="width:200px; word-wrap:break-word; display:inline-block;">
+{{hist1}}</span>
+
+<td><p><span style="width:200px; word-wrap:break-word; display:inline-block;">
+{{hist2}}</span>
+
+<td><p><span style="width:200px; word-wrap:break-word; display:inline-block;">
+{{hist3}}</span>
+
 </tr></table</tr></table></body></html>
 """
 
@@ -103,6 +123,16 @@ def index():
     hist2_hash = md5.hexdigest()
     md5.update(hist3)
     hist3_hash = md5.hexdigest()
+
+    def add_wbr(s):
+        l = list(s)
+        for pos in range(0, len(l), 10):
+            l[pos] = l[pos] + " "
+        return s
+        return "".join(l)
+    hist1 = add_wbr(hist1)
+    hist2 = add_wbr(hist2)
+    hist3 = add_wbr(hist3)
     return template(TEMPLATEINDEX, slogan=slogan,
                     hist1=hist1, hist2=hist2, hist3=hist3,
                     sloganHash=slogan_hash, hist1Hash=hist1_hash,
