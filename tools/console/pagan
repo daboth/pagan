@@ -1,6 +1,5 @@
 #!/usr/bin/env python
-"""call pagan from console
-"""
+"""pagan command line interface"""
 
 import argparse
 import os
@@ -8,24 +7,28 @@ import pagan
 from pagan import generator
 
 parser = argparse.ArgumentParser()
-parser.add_argument("slogan", nargs="+",
+parser.add_argument("input", nargs="+",
                     help="string, basis of avatar computing")
 parser.add_argument("--show", action="store_true",
                     help="show avatar in external editor, default behavior")
 parser.add_argument("--output",
-                    help="save image to output path")
+                    help="save image to specific output path")
 parser.add_argument("--hash", default="MD5",
                     help="use hash function, allowed %s, default %s" %
-                    (generator.HASHES.values(), generator.HASHES.values()[0]))
+                    (generator.HASHES.values(), "MD5"))
 
 args = parser.parse_args()
 
-slogan = " ".join(args.slogan)
+slogan = " ".join(args.input)
 
 if args.hash and args.hash not in generator.HASHES.values():
     HASH = ""
 elif args.hash and args.hash in generator.HASHES.values():
-    HASH = generator.HASHES.values().index(args.hash)
+    # dict.keys() must not be right ordered
+    for key in generator.HASHES:
+        if args.hash == generator.HASHES[key]:
+            HASH = key
+            break
 
 if not args.output:
     args.show = True
@@ -36,3 +39,5 @@ if args.show:
 
 if args.output:
     img.save(*os.path.split(args.output))
+else:
+    img.save(os.getcwd(), filename=args.input[0])
