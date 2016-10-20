@@ -11,6 +11,10 @@ import logging
 import pagan
 import tempfile
 
+# TODO() Long input on main page destroys page
+# TODO() Better Layout on main page
+# TODO() Beautify 404 Error
+
 logging.warning("\n%s\n\
 early work in progress, try at your own risk\n\
 this will pollute your temp dir!\n\
