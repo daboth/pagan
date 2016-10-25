@@ -40,4 +40,5 @@ if args.show:
 if args.output:
     img.save(*os.path.split(args.output))
 else:
-    img.save(os.getcwd(), filename=args.input[0])
+    img.save(os.getcwd(),
+             filename=args.input[0].replace("/", "").replace("..", ""))
