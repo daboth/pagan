@@ -14,6 +14,10 @@ import tempfile
 # TODO() Long input on main page destroys page
 # TODO() Better Layout on main page
 # TODO() Beautify 404 Error
+# TODO() Select Hash Function
+# TODO() Store choosen Hash in Cookie
+# TODO() Sent Image on the fly
+# TODO() Seperate Template from code
 
 logging.warning("\n%s\n\
 early work in progress, try at your own risk\n\
@@ -78,12 +82,8 @@ app = Bottle()
 @app.error(404)
 def error404(code):
     """handle error 404 """
-    return """<table><tr><td>
-            <img src="/himage/01234567890abcdef01234567890abcdef">
-            <td>
-            I am the guard of this server and I am sorry to tell you:\
-            <h1>404 Avatar/Page not found.</h1> <p>Please go back to the \
-            <a href=/>front door</a>."""
+    return template("error.template",
+                    guardcode="01234567890abcdef01234567890abcdef")
 
 
 @app.route('/')
