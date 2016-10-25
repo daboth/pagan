@@ -1,0 +1,25 @@
+# A super-simple "hello world" server that exposes port 8080
+#
+# VERSION               0.1.0
+FROM debian
+MAINTAINER me
+
+# create user
+RUN groupadd web
+RUN useradd -d /home/bottle -m bottle
+
+# make sure sources are up to date
+RUN apt-get update
+RUN apt-get upgrade -y
+
+# install pip and hello-world server requirements
+RUN apt-get install python-pip -y --no-install-recommends
+RUN apt-get install python-pil -y --no-install-recommends
+RUN pip install bottle
+RUN pip install pagan
+ADD ./ /home/bottle/pagan/
+
+# in case you'd prefer to use links, expose the port
+EXPOSE 8080
+ENTRYPOINT ["/usr/bin/python", "/home/bottle/pagan/tools/webserver/webserver.py"]
+USER bottle
