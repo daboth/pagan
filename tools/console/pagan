@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import string
 import pagan
 from pagan import generator
 
@@ -11,6 +12,8 @@ parser.add_argument("input", nargs="+",
                     help="string, basis of avatar computing")
 parser.add_argument("--show", action="store_true",
                     help="show avatar in external editor, default behavior")
+parser.add_argument("--noshow", action="store_true",
+                    help="don't show avatar in external editor")
 parser.add_argument("--output",
                     help="save image to specific output path")
 parser.add_argument("--hash", default="MD5",
@@ -19,7 +22,11 @@ parser.add_argument("--hash", default="MD5",
 
 args = parser.parse_args()
 
+<<<<<<< HEAD
 slogan = " ".join(args.input)
+=======
+INPUT = " ".join(args.input)
+>>>>>>> testbranch
 
 if args.hash and args.hash not in generator.HASHES.values():
     HASH = ""
@@ -30,14 +37,24 @@ elif args.hash and args.hash in generator.HASHES.values():
             HASH = key
             break
 
-if not args.output:
+if not args.output and not args.noshow:
     args.show = True
 
-img = pagan.Avatar(slogan, HASH)
-if args.show:
+img = pagan.Avatar(INPUT, HASH)
+if not args.noshow and args.show:
     img.show()
 
 if args.output:
     img.save(*os.path.split(args.output))
 else:
+<<<<<<< HEAD
     img.save(os.getcwd(), filename=args.input[0])
+=======
+    filename = args.input[0]
+    # make filename save again
+    allowed = string.ascii_letters + string.digits + "+-_"
+    filename = "".join([((c in allowed) and c or "-") for c in filename])
+
+    img.save(os.getcwd(),
+             filename=filename)
+>>>>>>> testbranch
