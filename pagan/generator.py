@@ -270,8 +270,10 @@ def setup_pixelmap(hashcode):
 
 
 def generate(str, alg):
-    """Generates an PIL image avatar based on the given
-    input String. Acts as the main accessor to pagan."""
+    """Generates an PIL image avatar based on the given input String.
+
+    Acts as the main accessor to pagan.
+    """
     img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
     hashcode = hash_input(str, alg)
     pixelmap = setup_pixelmap(hashcode)
@@ -280,18 +282,20 @@ def generate(str, alg):
 
 
 def generate_by_hash(hashcode):
-    """Generates an PIL image avatar based on the given
-    hash String. Acts as the main accessor to pagan."""
+    """Generates an PIL image avatar based on the given hash String.
+
+    Acts as the main accessor to pagan.
+    """
     img = Image.new(IMAGE_MODE, IMAGE_SIZE, BACKGROUND_COLOR)
     if len(hashcode) < 32:
         print ("hashcode must have lenght >= 32, %s" % hashcode)
         raise FalseHashError
 
-    allowed = "0123456789abcdef"
-    hashcheck = [c in allowed for c in hashcode]
-    if False in hashcheck:
-        print ("hashcode has not allowed structure %s" % hashcode)
-        raise FalseHashError
+    allowed = "0123456789ABCDEFabcdef"
+    for c in hashcode:
+        if c not in allowed:
+            print ("hashcode has not allowed structure %s" % hashcode)
+            raise FalseHashError
 
     pixelmap = setup_pixelmap(hashcode)
     draw_image(pixelmap, img)
