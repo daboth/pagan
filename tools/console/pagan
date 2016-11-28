@@ -22,11 +22,7 @@ parser.add_argument("--hash", default="MD5",
 
 args = parser.parse_args()
 
-<<<<<<< HEAD
-slogan = " ".join(args.input)
-=======
 INPUT = " ".join(args.input)
->>>>>>> testbranch
 
 if args.hash and args.hash not in generator.HASHES.values():
     HASH = ""
@@ -47,9 +43,6 @@ if not args.noshow and args.show:
 if args.output:
     img.save(*os.path.split(args.output))
 else:
-<<<<<<< HEAD
-    img.save(os.getcwd(), filename=args.input[0])
-=======
     filename = args.input[0]
     # make filename save again
     allowed = string.ascii_letters + string.digits + "+-_"
@@ -57,4 +50,3 @@ else:
 
     img.save(os.getcwd(),
              filename=filename)
->>>>>>> testbranch
