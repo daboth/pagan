@@ -25,6 +25,6 @@ setup(
         'Environment :: Web Environment',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    install_requires=['Pillow>=2.3.0']
+    install_requires=['Pillow>=2.3.0', 'future']
 
 )

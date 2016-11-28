@@ -7,6 +7,7 @@ import hashlib
 import os
 import sys
 
+from builtins import bytes
 
 class FalseHashError(Exception):
     """ """
@@ -103,12 +104,7 @@ def hash_input(inpt, algo=HASH_SHA256):
     elif (algo == HASH_SHA512):
         hashcode = hashlib.sha512()
 
-    if sys.version_info.major == 2:
-        inpt = bytes(inpt)
-    else:
-        inpt = bytes(inpt, "utf-8")
-
-    hashcode.update(inpt)
+    hashcode.update(bytes(inpt, "utf-8"))
     hexhash = hashcode.hexdigest()
     return hexhash
 
