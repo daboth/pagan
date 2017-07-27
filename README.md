@@ -27,7 +27,7 @@ comment sections, e.g. visualizing the author's IP address or username.
 * Expand pagan by adding new weapons or gear.
 * Enjoy the nostalgia!
 
-###Example avatars hashed with SHA512:
+### Example avatars hashed with SHA512:
 
 Input  | Avatar
 ------------- | -------------
@@ -39,7 +39,7 @@ retro | ![retro](/images/retro.png)
 piece of cake | ![piece of cake](/images/piece%20of%20cake.png)
 hash me if you can | ![hash me if you can](/images/hash%20me%20if%20you%20can.png)
 
-###Installation:
+### Installation:
 
 Clone this repository:
 ```
@@ -54,7 +54,7 @@ or install with pip:
 >> pip install pagan
 ```
 
-###Python usage example:
+### Python usage example:
 ```python
 # Import the pagan module.
 import pagan
@@ -88,7 +88,7 @@ img.save(outpath, filename)
 img.change('new input', pagan.SHA256)
 ```
 
-###Command Line Interface
+### Command Line Interface
 
 With the pagan command line interface you can generate avatars without writing python scripts.
 ```
@@ -105,7 +105,7 @@ use the help parameter.
 >> pagan -h
 ```
 
-###Webserver
+### Webserver
 
 Pagan can be run in a simple demo webserver application. To access the pagan demo, you need to run the script
 from the webserver directory. Beware: This is a demo application and it will fill your temp directory with pagan generated
@@ -119,7 +119,7 @@ The webserver will serve on your localhost at port 8080. Open this adress in you
 http://127.0.0.1:8080/
 ```
 
-###Supported Hashes
+### Supported Hashes
 
 Hash     | Constant
 -------- | --------
@@ -130,19 +130,19 @@ sha256 | pagan.SHA256
 sha384 | pagan.SHA384
 sha512 | pagan.SHA512
 
-###Testing
+### Testing
 
 To run the pagan tests, you need to install additional python modules. You can choose between pytest and tox. Configure
 the tox.ini to test different python versions.
 
-####Using py.test
+#### Using py.test
 
 ```
 >> pip install pytest
 >> pytest
 ```
 
-####Using tox
+#### Using tox
 
 ```
 >> pip install tox
