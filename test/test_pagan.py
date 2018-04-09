@@ -1,4 +1,7 @@
 # -*- coding: latin-1 -*-
+import os
+import random
+import string
 import tempfile
 import pagan
 
@@ -49,6 +52,17 @@ def test_save():
     img0.save(tmpdir, tmpfile)
 
 
+def test_save_new_dir():
+    """save file in not existing directory"""
+    img0 = pagan.Avatar("1")
+    tmpdir = tempfile.gettempdir()
+    testdir = ''.join(random.SystemRandom().choice(string.digits)
+                      for _ in range(12))
+    testdir = os.path.join(tmpdir, testdir)
+    testfile = tempfile.mkstemp("", dir=tmpdir)[1].split("/")[-1]
+    img0.save(testdir, testfile)
+
+
 if __name__ == "__main__":
     test_create()
     test_diffrent_hash()
@@ -56,3 +70,4 @@ if __name__ == "__main__":
     test_show()
     test_change()
     test_save()
+    test_save_new_dir()
