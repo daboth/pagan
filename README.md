@@ -142,6 +142,33 @@ sha512 | pagan.SHA512
 To test Pagan, you must install either the pytest or tox Python modules.
 Configure tox.ini to test different Python versions.
 
+### Docker
+
+To use pagan within Docker, you must build the Docker image with:
+
+```
+>> docker build -t pagan .
+```
+
+Then, run docker image
+
+```
+>> docker run -d -p 8080:8080 -t pagan
+```
+
+The webserver inside Docker will serve from localhost port 8080. Open this adress in your
+browser window:
+```
+http://127.0.0.1:8080/
+```
+
+If you want to use PAGAN CLI, you just have to look for the IP Adress of the Docker container and then connect through ssh with user: pagan and pass: pagan, like this:
+
+```
+>> ssh -X pagan@dockercontainerip
+```
+
+
 #### Using py.test
 
 ```
