@@ -38,7 +38,7 @@ class Avatar():
         Uses the standard hash function if no one is given."""
         self.img = self.__create_image(inpt, hashfun)
 
-    def save(self, path=DEFAULT_OUTPUT_PATH, filename=DEFAULT_FILENAME):
+    def save(self, path=DEFAULT_OUTPUT_PATH, filename=DEFAULT_FILENAME, exstension):
         """Saves a avatar under the given output path to
         a given filename. The file ending ".png" is appended
         automatically. If the path does not exist, it will be
@@ -50,12 +50,15 @@ class Avatar():
             os.makedirs(path)
 
         # Cut the .png file ending if one was omitted.
-        if filename[-4:] == ".png":
+        if !str.startswith(extensionT, ".")
+        	extension = str.subtext(exstension, 1 - len(exstension)); 
+
+        if filename[-4:] == "." + exstension:
             filename = filename[:-4]
 
         # Saves the image under the given filepath.
-        filepath = ("%s%s.png" % (path, filename))
-        filepath = os.path.join(path, "%s.png" % filename)
+        filepath = ("%s%s." + exstension % (path, filename))
+        filepath = os.path.join(path, "%s." + exstension % filename)
         # FIXIT: filepath without SUFFIX, print writes false filename
         print ("Saving: %s" % filepath)
-        self.img.save(filepath, 'PNG')
+        self.img.save(filepath, str.upper(exstension)
