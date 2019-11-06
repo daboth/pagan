@@ -11,6 +11,11 @@ class Avatar():
     # Default filename.
     DEFAULT_FILENAME = ('pagan')
 
+    # Default extension
+    DEFAULT_EXTENSION = 'png'
+
+    ALLOWED_EXTENSIONS = ['bmp', 'gif', 'png', 'tiff']
+
     DEFAULT_HASHFUN = generator.HASH_MD5
 
     def __init__(self, inpt, hashfun=DEFAULT_HASHFUN):
@@ -38,24 +43,37 @@ class Avatar():
         Uses the standard hash function if no one is given."""
         self.img = self.__create_image(inpt, hashfun)
 
-    def save(self, path=DEFAULT_OUTPUT_PATH, filename=DEFAULT_FILENAME):
+    def save(self,
+        path=DEFAULT_OUTPUT_PATH,
+        filename=DEFAULT_FILENAME,
+        extension=DEFAULT_EXTENSION):
         """Saves a avatar under the given output path to
         a given filename. The file ending ".png" is appended
         automatically. If the path does not exist, it will be
         created. When no parameters are omitted, a default path
         and/or filename will be used."""
 
+        # Check if the extension is an allowed one
+        if extension not in self.ALLOWED_EXTENSIONS:
+            raise Exception(
+                'Extension "%s" is not supported. Supported extensions are: %s'
+                %(extension, ', '.join(self.ALLOWED_EXTENSIONS)))
+
         # Creates a path when it does not exist.
         if not os.path.exists(path):
             os.makedirs(path)
 
-        # Cut the .png file ending if one was omitted.
-        if filename[-4:] == ".png":
-            filename = filename[:-4]
+        # Make sure extension has no leading dot
+        if extension.startswith('.'):
+            extension = extension[1:]
+
+        # Cut the file extension, if it's part of the filename.
+        if filename[-len(extension):] == extension:
+            filename = filename[:-len(extension)-1]
 
         # Saves the image under the given filepath.
-        filepath = ("%s%s.png" % (path, filename))
-        filepath = os.path.join(path, "%s.png" % filename)
+        filepath = ('%s%s.%s' % (path, filename, extension))
+        filepath = os.path.join(path, '%s.%s' % (filename, extension))
         # FIXIT: filepath without SUFFIX, print writes false filename
-        print ("Saving: %s" % filepath)
-        self.img.save(filepath, 'PNG')
+        print ('Saving: %s' % filepath)
+        self.img.save(filepath, extension.upper())
