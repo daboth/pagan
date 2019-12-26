@@ -107,7 +107,7 @@ def index():
 
 @route('/himage/<hashvalue>')
 def hashimage(hashvalue):
-    """generate image by hash, usese tempfile :-/"""
+    """generate image by hash, uses tempfile :-/"""
     tmpf = tempfile.mkstemp(".png")[1]
     image = pagan.Avatar("")
     image.img = pagan.generator.generate_by_hash(hashvalue)
