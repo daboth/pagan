@@ -19,7 +19,7 @@ FIXED_PIXEL = 'o'
 OPTIONAL_PIXEL = '+'
 
 # TODO: Split into two methods - Finding fixed pixels and optional pixels?
-# Less efficient but does not damage my brain. Or generate a tupel of two lists in a seperate method
+# Less efficient but does not damage my brain. Or generate a tuple of two lists in a separate method
 # and handle them differently.
 def parse_pagan_file(filename, hashcode, sym=False, invert=False):
     fd = open(filename, 'r')

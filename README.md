@@ -120,7 +120,7 @@ execute the following instructions from the webserver directory:
 Beware: This demo of Pagan will fill your temporary directory with generated
 image files. Do not run it in production!
 
-The webserver will serve from localhost port 8080. Open this adress in your
+The webserver will serve from localhost port 8080. Open this address in your
 browser window:
 ```
 http://127.0.0.1:8080/
@@ -156,13 +156,13 @@ Then, run docker image
 >> docker run -d -p 8080:8080 -t pagan
 ```
 
-The webserver inside Docker will serve from localhost port 8080. Open this adress in your
+The webserver inside Docker will serve from localhost port 8080. Open this address in your
 browser window:
 ```
 http://127.0.0.1:8080/
 ```
 
-If you want to use PAGAN CLI, you just have to look for the IP Adress of the Docker container and then connect through ssh with user: pagan and pass: pagan, like this:
+If you want to use PAGAN CLI, you just have to look for the IP Address of the Docker container and then connect through ssh with user: pagan and pass: pagan, like this:
 
 ```
 >> ssh -X pagan@dockercontainerip

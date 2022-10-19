@@ -94,14 +94,14 @@ def init_weapon_list():
 def grind_hash_for_colors(hashcode):
     """Extracts information from the hashcode
     to generate different colors. Returns a
-    list of colors in (r,g,b) tupels."""
+    list of colors in (r,g,b) tuples."""
 
     # When using smaller hash algorithms like MD5 or SHA1,
     # the number of bits does not provide enough information
     # to generate unique colors. Instead the hash is internally
     # appended by itself to fit the MINIMUM_HASH_LEN.
     # This leads to smaller hashes displaying less color
-    # variatons, depicting the insecurity of small hashes.
+    # variations, depicting the insecurity of small hashes.
     while (len(hashcode) < MINIMUM_HASH_LEN):
         chardiff = diff(len(hashcode), MINIMUM_HASH_LEN)
         if DEBUG:
