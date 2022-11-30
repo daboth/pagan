@@ -1,3 +1,7 @@
+### 0.4.4
+
+ * Drop Python 2 support and ensure Python 3 is well supported
+
 ### 0.4.3
 
  * Added simple webserver (early state, unstable) to use pagan as a web application.
