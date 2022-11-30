@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='pagan',
     packages=['pagan'],
-    use_2to3=True,
+    use_2to3=False,
     include_package_data=True,
     version='0.4.3',
     url='https://github.com/daboth/pagan',
