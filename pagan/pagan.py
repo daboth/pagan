@@ -1,6 +1,7 @@
 # -*- coding: latin-1 -*-
-import generator
 import os
+
+import pagan.generator as generator
 
 
 class Avatar():
