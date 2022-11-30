@@ -3,10 +3,10 @@ from python:2.7
 RUN apt-get update
 
 # Installing dependencies
-RUN pip install bottle
+RUN pip install bottle Pillow==2.3.0
 RUN apt-get install -y \
     python-setuptools \
-    python-imaging \
+    python-pil \
     openssh-server \
     openssh-client \
     x11-xserver-utils \
